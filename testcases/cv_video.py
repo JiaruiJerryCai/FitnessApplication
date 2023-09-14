@@ -1,7 +1,7 @@
 import cv2
 
 # Get the video from the file
-video = cv2.VideoCapture('bp.mp4') # Change the file name to 0 to read the webcam
+video = cv2.VideoCapture('testcases/bp.mp4') # Change the file name to 0 to read the webcam
 
 if not video.isOpened():
     print("Error with video file...")

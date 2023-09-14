@@ -2,8 +2,10 @@
 
 import cv2
 
-image1 = cv2.imread('Beautiful_Red_Rose.jpeg')
+image1 = cv2.imread('testcases/Beautiful_Red_Rose.jpeg')
 cv2.imshow('Window 2', image1)
+
+# image.shape allows you to access the property of the images to find its width and height
 print(image1.shape)
 cv2.waitKey(0)
 

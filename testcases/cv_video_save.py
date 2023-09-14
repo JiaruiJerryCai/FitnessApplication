@@ -46,7 +46,7 @@ So that you dont need a '#' every time
 import cv2
 
 # Get the video from the file
-video = cv2.VideoCapture('bp.mp4') # Change the file name to 0 to read the webcam
+video = cv2.VideoCapture("testcases/bp.mp4") # Change the file name to 0 to read the webcam
 
 frame_size = (int(video.get(3)), int(video.get(4)))
 writer = cv2.VideoWriter('edit_bp.mp4', fourcc=cv2.VideoWriter_fourcc(*'XVID'), fps=20, frameSize=frame_size) # Start saving a video
