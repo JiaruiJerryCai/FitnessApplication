@@ -126,6 +126,7 @@ print(myDog.length)
 myDog.setLength("Hello")
 print(myDog.length)
 
+
 # Dictionaries
 colorlist=["red","green","blue"] # indexes: [0, 1, 2]
 print(colorlist[1]) # green
