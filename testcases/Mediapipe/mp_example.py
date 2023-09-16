@@ -14,7 +14,7 @@ mp_drawing = mediapipe.solutions.drawing_utils
 mp_pose = mediapipe.solutions.pose
 pose = mp_pose.Pose()   # Store POSE AI model inside variable
 
-# Convert image from opencv to RGB
+# Convert image from opencv (BGR) to mediapipe (RGB)
 rgbPic = cv2.cvtColor(pic, cv2.COLOR_BGR2RGB)
 
 result = pose.process(rgbPic) # use model to analyze the given image
