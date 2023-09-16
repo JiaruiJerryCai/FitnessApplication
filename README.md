@@ -3,7 +3,7 @@ An application used to correct and analyze exercise movements, it can be used fo
 
 
 Matthew's Work:
-
+Feature 2 
 
 
 Jerry Work:
