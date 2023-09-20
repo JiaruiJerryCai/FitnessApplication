@@ -49,7 +49,7 @@ import cv2
 video = cv2.VideoCapture("testcases/bp.mp4") # Change the file name to 0 to read the webcam
 
 frame_size = (int(video.get(3)), int(video.get(4)))
-writer = cv2.VideoWriter('edit_bp.mp4', fourcc=cv2.VideoWriter_fourcc(*'XVID'), fps=20, frameSize=frame_size) # Start saving a video
+writer = cv2.VideoWriter('testcases/VideosandPhotos/edit_bp.mp4', fourcc=cv2.VideoWriter_fourcc(*'XVID'), fps=20, frameSize=frame_size) # Start saving a video
 
 if not video.isOpened():
     print("Error with video file...")
