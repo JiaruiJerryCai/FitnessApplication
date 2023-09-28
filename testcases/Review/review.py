@@ -156,3 +156,8 @@ mT.forward(100)
 
 # Run myFunction from myClass
 myClass.myFunction()
+
+myDiction = {'Tim': 'green', 'Jerry': 'blue', 'Matthew': 'purple', 'Alan': 'blue'}
+
+for x in myDiction:
+    print(x)

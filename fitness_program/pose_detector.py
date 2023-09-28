@@ -54,10 +54,10 @@ class Detector:
     
     # Retrieves distance between two selected body parts
     def getDistance(self, body_part1, body_part2): 
-        bp1x = self.results.pose_landmarks.landmark[body_part1].x
-        bp1y = self.results.pose_landmarks.landmark[body_part1].y
-        bp2x = self.results.pose_landmarks.landmark[body_part2].x
-        bp2y = self.results.pose_landmarks.landmark[body_part2].y
+        bp1x = self.results.pose_landmarks.landmark[body_part1].x * self.image.shape[1]
+        bp1y = self.results.pose_landmarks.landmark[body_part1].y * self.image.shape[0]
+        bp2x = self.results.pose_landmarks.landmark[body_part2].x * self.image.shape[1]
+        bp2y = self.results.pose_landmarks.landmark[body_part2].y * self.image.shape[0]
 
         # Calculate distance
         distance = math.sqrt((bp2y - bp1y)**2 + (bp2x - bp1x)**2)
