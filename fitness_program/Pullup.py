@@ -24,6 +24,9 @@ class set:
 
     def process(self, frame):
 
+        # Use detector to analyze the frame
+        self.detector.analyze(frame)
+
         # What movements to read
         
         # =========================== Check for Errors ========================

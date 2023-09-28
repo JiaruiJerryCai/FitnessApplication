@@ -34,6 +34,9 @@ class set:
         return self.count
 
     def process(self, frame):
+
+        # Use detector to analyze the frame
+        self.detector.analyze(frame)
         
         # Calculate Direction
         if self.previous_location == None:
