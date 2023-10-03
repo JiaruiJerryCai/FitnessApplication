@@ -50,15 +50,14 @@ class set:
                 self.direction = "down" #down
             self.previous_location = self.current_location
             
+            
         # Check if one rep has been completed
         if self.direction != None:
             leftelbowangle = self.detector.getAngle(15,13,11)
-            print("leftelbowangle", leftelbowangle)
             if leftelbowangle < 70 and self.direction == "down":
                 self.armsFullyBent = True
                 self.half_completed = True
             if leftelbowangle > 140:
-                print("Hellooo")
                 self.armsFullyExtended = True
                 if self.half_completed:
                     self.completed()

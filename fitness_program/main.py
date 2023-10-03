@@ -1,16 +1,17 @@
 import cv2
 import mediapipe
-import pose_detector
+import Pullup
 import Pushup
 
 # Get the video from the file
-file_location = 'fitness_program/pushup_incorrect.mp4'
+file_location = 'fitness_program/Pullup.mp4'
 video = cv2.VideoCapture(file_location) # Change the file name to 0 to read the webcam
 
 if not video.isOpened():
     print("Error with video file...")
 
-pushupAnalyzer = Pushup.set()
+# pushupAnalyzer = Pushup.set()
+pullupAnalyzer = Pullup.set()
 
 # Check if the video is open
 while video.isOpened():
@@ -20,7 +21,7 @@ while video.isOpened():
 
     if success:
         # Progess the rep based on the frame
-        pushupAnalyzer.process(frame)
+        pullupAnalyzer.process(frame)
 
         cv2.imshow("Your Workout", frame)
         key = cv2.waitKey(0)
