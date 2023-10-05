@@ -146,4 +146,6 @@ class set:
             row = row + 1
 
         # Draws the amount of reps performed
-        cv2.putText(frame, str(self.count), (100,700), 16, 3, (0,0,255), thickness=5)
+        x_origin = int(self.detector.image.shape[0]*0.2)
+        y_origin = int(self.detector.image.shape[0]*0.8)
+        cv2.putText(frame, str(self.count), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
