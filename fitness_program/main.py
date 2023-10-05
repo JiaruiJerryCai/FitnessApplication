@@ -4,7 +4,7 @@ import Pullup
 import Pushup
 
 # Get the video from the file
-file_location = 'fitness_program/Pullup.mp4'
+file_location = 'resources/Pullup.mp4'
 video = cv2.VideoCapture(file_location) # Change the file name to 0 to read the webcam
 
 if not video.isOpened():
