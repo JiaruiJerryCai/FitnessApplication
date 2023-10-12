@@ -1,6 +1,3 @@
-#incomplete
-import cv2
-import mediapipe
 import pose_detector
 import time
 

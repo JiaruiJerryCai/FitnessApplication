@@ -60,9 +60,9 @@ class Detector:
         bp2y = self.results.pose_landmarks.landmark[body_part2].y * self.image.shape[0]
 
         # Calculate distance
-        distance = math.sqrt((bp2y - bp1y)**2 + (bp2x - bp1x)**2)
+        abs_distance = math.sqrt((bp2y - bp1y)**2 + (bp2x - bp1x)**2)
 
-        return distance
+        return abs_distance
     
     # Retrieves angle between three selected body parts
     def getAngle(self, body_part1, body_part2, body_part3):
@@ -86,3 +86,15 @@ class Detector:
         cv2.putText(self.image, str(angle), (x,y), 16, 2, (255,255,255), thickness=5)
 
         return angle
+    
+    def getMidpoint(self, body_part1, body_part2):
+        bp1x = self.results.pose_landmarks.landmark[body_part1].x * self.image.shape[1]
+        bp1y = self.results.pose_landmarks.landmark[body_part1].y * self.image.shape[0]
+        bp2x = self.results.pose_landmarks.landmark[body_part2].x * self.image.shape[1]
+        bp2y = self.results.pose_landmarks.landmark[body_part2].y * self.image.shape[0]
+
+        # Calculates the absolute midpoint of two points
+        midpoint_x = int((bp1x + bp2x)/2)
+        midpoint_y = int((bp1y + bp2y)/2)
+        
+        return midpoint_x, midpoint_y
