@@ -22,7 +22,6 @@ def NumberRoute():
 
 @app.route('/videoresult')
 def videoResultRoute():
-
     analyzedVideo = runAnalysis("pushup", "videoFileLocation")
     return analyzedVideo
 

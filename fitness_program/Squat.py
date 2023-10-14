@@ -35,7 +35,8 @@ class set:
         # Use detector to analyze the frame
         self.detector.analyze(frame)
         
-        
+        # Get angle example
+        self.detector.getMidpoint(12, 11)
         # =========================== Check for Errors ========================
             
 

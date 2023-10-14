@@ -1,5 +1,3 @@
-import cv2
-import mediapipe
 import pose_detector
 import time
 
@@ -14,7 +12,7 @@ class set:
         self.half_completed = None
         self.previous_location = None
         self.starting_position = None
-        self.count = 0 
+        self.time = 0 
         self.direction = None
         self.end_movement = None
         
@@ -38,34 +36,11 @@ class set:
         # Use detector to analyze the frame
         self.detector.analyze(frame)
         
-        # Calculate Direction
-        if self.previous_location == None:
-            _, self.previous_location = self.detector.getCoordinate(11) # left shoulder
-        else:
-            # Determine direction once the person has moved
-            _, self.current_location = self.detector.getCoordinate(11)
-            if self.previous_location - (self.detector.getDistance(13,15) * 0.04) > self.current_location:
-                self.direction = "up" # up
-            elif self.previous_location + (self.detector.getDistance(13,15) * 0.04) < self.current_location:
-                self.direction = "down" #down
-            self.previous_location = self.current_location
-            
-            
-        # Check if one rep has been completed
-        if self.direction != None:
-            leftelbowangle = self.detector.getAngle(15,13,11)
-            if leftelbowangle < 70 and self.direction == "down":
-                self.armsFullyBent = True
-                self.half_completed = True
-            if leftelbowangle > 140:
-                self.armsFullyExtended = True
-                if self.half_completed:
-                    self.completed()
-                    self.end_movement = True
-
-        # Mark end of ending movement
-        if self.end_movement and self.direction == "down":
-            self.end_movement = False
+        # Determine if posture is in plank formation
+        # ... 
+        
+        # If the current pose is in plank position then start the time
+        self.time = time.time()
 
         # =========================== Check for Errors ========================
             
@@ -148,4 +123,4 @@ class set:
         # Draws the amount of reps performed
         x_origin = int(self.detector.image.shape[0]*0.2)
         y_origin = int(self.detector.image.shape[0]*0.8)
-        cv2.putText(frame, str(self.count), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
+        cv2.putText(frame, str(self.time), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
