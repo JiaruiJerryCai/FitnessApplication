@@ -2,7 +2,10 @@ import Pullup
 import Pushup
 import Squat
 import Plank
+import firebase_manager
 import cv2
+
+manager = firebase_manager.firebaseManager()
 
 def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed):
 
@@ -22,7 +25,7 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed):
     VideoFPS = video.get(cv2.CAP_PROP_FPS) 
     VideoSize = (int(VideoWidth), int(VideoHeight)) #tuple: used to group things
     videoFile = 'resources/' + videoNameAnalyzed + '.mp4'
-    writer = cv2.VideoWriter(videoFile, fourcc=cv2.VideoWriter_fourcc(*'XVID'), fps=VideoFPS, frameSize=VideoSize) # Start saving a video
+    writer = cv2.VideoWriter(videoFile, fourcc=cv2.VideoWriter_fourcc('m','p','4','v'), fps=VideoFPS, frameSize=VideoSize) # Start saving a video
 
     # Print error if video is not accessible
     if not video.isOpened():
@@ -49,8 +52,9 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed):
 
     video.release()
     writer.release()
+    LinkToVideo = manager.uploadFile(videoFile)
     cv2.destroyAllWindows()
-
-    return videoFile
+    
+    return LinkToVideo
 
         

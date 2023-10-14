@@ -10,19 +10,22 @@ class set:
         self.detector = pose_detector.Detector()
 
         # Variables to determine rep progress
-        # self.half_completed = None
-        # self.previous_location = None
-        # self.starting_position = None
-        # self.count = 0 
-        # self.direction = None
-        # self.end_movement = None
+        self.half_completed = None
+        self.previous_location = None
+        self.starting_position = None
+        self.count = 0 
+        self.direction = None
+        self.end_movement = None
         
         # Variables to determine if form is correct (everything should be true when correct)
         # Maintained body part
-        # ...
+        self.straightBack = True
+        self.straightHead = True
 
         # Changing body part
-        # ...
+        self.legFullyBent = False
+        self.legFullyExtended = False
+        self.endTiltedBack = False
         
         # Error Dictionary
         self.error_dict = {}
@@ -50,13 +53,12 @@ class set:
             self.count = self.count + 1
         
         # Variables to determine if form is correct
-        self.backAlwaysStraight = True
-        self.kneeAlwaysStraight = True 
-        self.headAlwaysStraight = True
-        self.armsFullyBent = False
-        self.armsFullyExtended = False
-        
-        self.half_completed = False
+        self.straightBack = True
+        self.straightHead = True
+
+        self.legFullyBent = False
+        self.legFullyExtended = False
+        self.endTiltedBack = False
 
     def drawFeedback(self, frame):
         # Check error_dict to remove errors older than 2 seconds
