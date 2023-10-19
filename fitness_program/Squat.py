@@ -37,11 +37,52 @@ class set:
 
         # Use detector to analyze the frame
         self.detector.analyze(frame)
-        
-        # Get angle example
-        self.detector.getMidpoint(12, 11)
-        # =========================== Check for Errors ========================
+
+        # Calculate Direction
+        if self.previous_location == None:
+            _, self.previous_location = self.detector.getCoordinate(0) # left shoulder
+        else:
+            # Determine direction once the person has moved
+            _, self.current_location = self.detector.getCoordinate(23)
+            if self.previous_location + (self.detector.getDistance(25,27) * 0) > self.current_location:
+                self.direction = "up" 
+            elif self.previous_location - (self.detector.getDistance(25,27) * 0) < self.current_location:
+                self.direction = "down" 
+            self.previous_location = self.current_location
             
+        # Check if one rep has been completed
+        leftlegangle = self.detector.getAngle(15,13,11)
+        if self.direction != None:
+            if  leftlegangle < 90 and self.direction == "down":
+                self.legFullyBent = True
+                self.half_completed = True
+            if leftlegangle > 150:
+                self.legFullyExtended = True
+                if self.half_completed:
+                    self.completed()
+                    self.end_movement = True
+
+        # Mark end of ending movement
+        if self.end_movement and self.direction == "down":
+            self.end_movement = False
+
+        # =========================== Check for Errors ========================
+
+        # Verify the nose is above the hand
+        error_msg = "Body not low enough"
+        if self.noseAboveHand == False  and self.direction == "down" and self.end_movement == False:
+            self.directionCount = self.directionCount + 1
+            if self.directionCount == 6:
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
+        else:
+            self.directionCount = 0
+
+        # Arms did not extend fully
+        error_msg = "arms not extended"
+        if self.direction == "up" and self.armsFullyExtended == False and self.end_movement == False:
+            if error_msg not in self.error_dict:
+                self.error_dict[error_msg] = time.time()
 
         # =====================================================================
 
