@@ -16,6 +16,8 @@ class _SecondPageState extends State<SecondPage> {
   late VideoPlayerController _controller;
   late Future<void> _initializeVideoPlayerFuture;
 
+  late String description;
+
   @override
   void initState() {
     super.initState();
@@ -23,9 +25,20 @@ class _SecondPageState extends State<SecondPage> {
     // Create and store the VideoPlayerController. The VideoPlayerController
     // offers several different constructors to play videos from assets, files,
     // or the internet.
-    _controller = VideoPlayerController.asset('assets/exercise.mp4');
+
+    if (widget.title == "Pushup") {
+      description = "lsidjfojwdfjwiodf";
+      _controller = VideoPlayerController.asset('assets/exercise.mp4');
+    } else if (widget.title == "Pullup") {
+      description = "pullyp";
+      _controller = VideoPlayerController.asset('assets/edit_bp.mp4');
+    } else if (widget.title == "Squat") {
+      description = "squatttt";
+      _controller = VideoPlayerController.asset('assets/AnalyzedPushup.mp4');
+    }
 
     _initializeVideoPlayerFuture = _controller.initialize();
+
   }
 
   @override
@@ -62,7 +75,7 @@ Widget videoDemo() {
 // VideoPlayerController to finish initializing.
   
   void navigateToThirdPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ThirdPage(title: "Camera")));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ThirdPage(title: "Camera", exercise: widget.title)));
   }
 
   @override
@@ -78,7 +91,7 @@ Widget videoDemo() {
           children: <Widget>[
             Container(
               height: 200,
-              child: Text('PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP PUSHUP '),
+              child: Text(description),
             ),
             Divider(
               height: 20,
@@ -90,7 +103,7 @@ Widget videoDemo() {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Text('Correct Move Demonstration'),
-                  //videoDemo(),
+                  videoDemo(),
                   ElevatedButton(
                     onPressed: () {
                       // Wrap the play or pause in a call to `setState`. This ensures the

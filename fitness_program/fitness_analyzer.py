@@ -41,11 +41,12 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed):
             # Progess the rep based on the frame
             analyzer.process(frame)
 
-            cv2.imshow("Your Workout", frame)
             writer.write(frame) # Save frames to recording
-            key = cv2.waitKey(20)
-            if key == ord('q'):
-                break
+
+            # cv2.imshow("Your Workout", frame)
+            # key = cv2.waitKey(20)
+            # if key == ord('q'):
+            #     break
 
         else:
             break

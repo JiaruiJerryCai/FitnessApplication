@@ -23,8 +23,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  void navigateToSecondPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SecondPage(title: "Pushup")));
+  void navigateToSecondPage(String exercise) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SecondPage(title: exercise)));
   }
   Widget customRow(String imageLocation, String position, String text) {
       if(position == "start") {
@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 200,
                     height: 200,
                     child: ElevatedButton(
-                      onPressed: navigateToSecondPage,
+                      onPressed: () { navigateToSecondPage(text); },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 200,
                     height: 200,
                     child: ElevatedButton(
-                      onPressed: navigateToSecondPage,
+                      onPressed: () { navigateToSecondPage(text); },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -96,9 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ListView(
             children: <Widget>[
               customRow("assets/pushup.webp","start","Pushup"),
-              customRow("assets/pushup.webp","end","Pushup"),
-              customRow("assets/pushup.webp","start","Pushup"),
-              customRow("assets/pushup.webp","end","Pushup"),
+              customRow("assets/pullup.jpeg","end","Pullup"),
+              customRow("assets/pushup.webp","start","Squat"),
+              customRow("assets/pushup.webp","end","Plank"),
             ],
           ),
         )
