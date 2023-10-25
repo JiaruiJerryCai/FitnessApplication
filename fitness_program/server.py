@@ -5,6 +5,10 @@ import os
 
 app = Flask(__name__)
 
+@app.route("/", methods=['GET', 'POST'])
+def root():
+    return "Connected to server..."
+
 @app.route("/exercise", methods=['GET', 'POST'])
 def showExercise():
     
@@ -31,7 +35,8 @@ def analyzeExercise():
     # Remove video from server after it is analyzed
     os.remove(videoname)
 
+    print(link)
     return link
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True)
