@@ -38,5 +38,10 @@ def analyzeExercise():
     print(link)
     return link
 
+@app.route("/exerciselist")
+def getExerciseList():
+
+    return 
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

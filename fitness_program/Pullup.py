@@ -73,7 +73,7 @@ class set:
         error_msg = "head not high enough"
         if self.noseAboveHand == False  and self.direction == "down" and self.end_movement == False:
             self.directionCount = self.directionCount + 1
-            if self.directionCount == 6:
+            if self.directionCount == 10:
                 if error_msg not in self.error_dict:
                     self.error_dict[error_msg] = time.time()
         else:

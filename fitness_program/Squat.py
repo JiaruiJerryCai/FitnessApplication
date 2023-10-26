@@ -25,7 +25,6 @@ class set:
         # Changing body part
         self.legFullyBent = False
         self.legFullyExtended = False
-        self.endTiltedBack = False
         
         # Error Dictionary
         self.error_dict = {}
@@ -40,7 +39,7 @@ class set:
 
         # Calculate Direction
         if self.previous_location == None:
-            _, self.previous_location = self.detector.getCoordinate(0) # left shoulder
+            _, self.previous_location = self.detector.getCoordinate(23) # left shoulder
         else:
             # Determine direction once the person has moved
             _, self.current_location = self.detector.getCoordinate(23)
@@ -51,7 +50,7 @@ class set:
             self.previous_location = self.current_location
             
         # Check if one rep has been completed
-        leftlegangle = self.detector.getAngle(15,13,11)
+        leftlegangle = self.detector.getAngle(23,25,27)
         if self.direction != None:
             if  leftlegangle < 90 and self.direction == "down":
                 self.legFullyBent = True
@@ -68,19 +67,15 @@ class set:
 
         # =========================== Check for Errors ========================
 
-        # Verify the nose is above the hand
+        # Verify the body is completely down
         error_msg = "Body not low enough"
-        if self.noseAboveHand == False  and self.direction == "down" and self.end_movement == False:
-            self.directionCount = self.directionCount + 1
-            if self.directionCount == 6:
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
-        else:
-            self.directionCount = 0
+        if not self.end_movement and self.direction == "up" and self.legFullyBent == False:
+            if error_msg not in self.error_dict:
+                self.error_dict[error_msg] = time.time()
 
-        # Arms did not extend fully
-        error_msg = "arms not extended"
-        if self.direction == "up" and self.armsFullyExtended == False and self.end_movement == False:
+        # Verify if arms were fully extended and chest was raised for rep
+        error_msg = "Body not high enough"
+        if self.direction == "down" and self.legFullyExtended == False:
             if error_msg not in self.error_dict:
                 self.error_dict[error_msg] = time.time()
 
@@ -99,7 +94,6 @@ class set:
 
         self.legFullyBent = False
         self.legFullyExtended = False
-        self.endTiltedBack = False
 
     def drawFeedback(self, frame):
         # Check error_dict to remove errors older than 2 seconds

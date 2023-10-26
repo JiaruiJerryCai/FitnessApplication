@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_application/FourthPage.dart';
 
 class ThirdPage extends StatefulWidget {
   const ThirdPage({super.key, required this.title, required this.exercise});
@@ -15,12 +16,16 @@ class ThirdPage extends StatefulWidget {
 }
 
 class _ThirdPageState extends State<ThirdPage> {
-  late Future<String> server_response; // Variable used to store the server response
+  // Variable used to store the server response
+  late Future<String> server_response; 
+  late String videolink;
   File? selectedFile;
 
   final picker = ImagePicker();
 
-
+  void navigateToFourthPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => FourthPage(title: "Save Video", videoLink: videolink)));
+  }
 
   // Control what the screen does when it first renders
   @override
@@ -28,7 +33,7 @@ class _ThirdPageState extends State<ThirdPage> {
     super.initState();
     server_response = sendRequest('http://127.0.0.1:5000/');
   }
-  
+
   // Method used to send a request to the server and return a response value
   Future<String> sendRequest(String url) async {
     try {
@@ -43,13 +48,16 @@ class _ThirdPageState extends State<ThirdPage> {
       final server_response = await request.send();
       final text = await server_response.stream.bytesToString();
       print(text);
-      return text as String;
+
+
+
+      return text;
 
     } catch (e) {
       print('error caught: $e');
     }
 
-    return "Error caught" as String;
+    return "Error caught";
   }
 
   // Method used to send a request to the server and return a response value
@@ -76,13 +84,18 @@ class _ThirdPageState extends State<ThirdPage> {
       final server_response = await request.send();
       final text = await server_response.stream.bytesToString();
       print(text);
-      return text as String;
+
+      setState(() {
+        videolink = text;
+      });
+
+      return text;
 
     } catch (e) {
       print('error caught: $e');
     }
 
-    return "Error caught" as String;
+    return "Error caught";
   }
   // Custom FutureBuilder Widget
   // Widget used to render the possible values of a Future
@@ -149,6 +162,10 @@ class _ThirdPageState extends State<ThirdPage> {
             ElevatedButton(
               onPressed: () { setState(() { server_response = sendExerciseRequest('http://127.0.0.1:5000/exercisevideo'); }); } ,
               child:Text("Connect to Exercise"),
+            ),
+            ElevatedButton(
+              onPressed: navigateToFourthPage,
+              child:Text("Go To Save the Edited Video Page"),
             ),
             serverText(),
           ],

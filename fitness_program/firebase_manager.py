@@ -8,7 +8,7 @@ class firebaseManager:
         if not firebase_admin._apps:
             cred = credentials.Certificate('key.json')
             firebase_admin.initialize_app(cred, {
-                'storageBucket':'fitnessdb-1787d.appspot.com'
+                'storageBucket':'fitnessdatabase-243dc.appspot.com'
             })
             self.bucket = storage.bucket()
 
