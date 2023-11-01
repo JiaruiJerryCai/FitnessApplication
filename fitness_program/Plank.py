@@ -1,29 +1,28 @@
 import pose_detector
+import cv2
 import time
 
 # Rep class used to track the completion and progress of a rep 
 # and check if the rep had any errors
 class set:
-    def __init__(self):
+    def __init__(self, videoFPS):
         # Intialize the detector to recognize body parts from image
         self.detector = pose_detector.Detector()
 
         # Variables to determine rep progress
-        self.half_completed = None
-        self.previous_location = None
         self.starting_position = None
-        self.time = 0 
-        self.direction = None
+        self.frame = None
         self.end_movement = None
-        
+        self.videoFPS = videoFPS
+
         # Variables to determine if form is correct (everything should be true when correct)
         #Maintained body part
         self.backAlwaysStraight = True
         self.kneeAlwaysStraight = True
         self.headAlwaysStraight = True 
-        #Changing body part
-        self.armsFullyBent = False
-        self.armsFullyExtended = False
+
+        # Changing body part
+        # ...
         
         # Error Dictionary
         self.error_dict = {}
@@ -32,70 +31,50 @@ class set:
         return self.count
 
     def process(self, frame):
+        print("Inside process for Plank")
 
         # Use detector to analyze the frame
         self.detector.analyze(frame)
         
         # Determine if posture is in plank formation
-        # ... 
-        
-        # If the current pose is in plank position then start the time
-        self.time = time.time()
+        inPosition = True
+        if self.frame == None and inPosition:
+            self.frame = 1
 
         # =========================== Check for Errors ========================
+        backAngle = self.detector.getAngle(11,23,25) # Left shoulder, hip, knee
+        kneeAngle = self.detector.getAngle(23,25,27) # Left hip, knee, ankle
+        headAngle = self.detector.getAngle(7,11,23) # Left ear, shoulder, hip
             
-        # Verify the back is straight the entire rep
-        error_msg = "back not straight"
-        angleofleftbutt = self.detector.getAngle(25, 23, 11)
-        if angleofleftbutt < 155 or angleofleftbutt > 190: 
+        # Verify the back is straight
+        error_msg = "back not straight"  
+        if backAngle < 155 or backAngle > 190:
             self.backAlwaysStraight = False
             if error_msg not in self.error_dict:
                 self.error_dict[error_msg] = time.time()
 
-        # Verify the knee was stright the entire rep
+        # Verify the knee is straight
         error_msg = "knee not straight"
-        angleofleftknee = self.detector.getAngle(23, 25, 27)
-        if angleofleftknee < 145: 
+        if kneeAngle < 145: 
             self.kneeAlwaysStraight = False
             if error_msg not in self.error_dict:
                 self.error_dict[error_msg] = time.time()
 
-        # Verify if arms were fully bent and chest was lowered for rep
-        error_msg = "chest not low enough"
-        if not self.end_movement and self.direction == "up" and self.armsFullyBent == False:
-            if error_msg not in self.error_dict:
-                self.error_dict[error_msg] = time.time()
-
-        # Verify if arms were fully extended and chest was raised for rep
-        error_msg = "chest not high enough"
-        if self.direction == "down" and self.armsFullyExtended == False:
-            if error_msg not in self.error_dict:
-                self.error_dict[error_msg] = time.time()
-
-        # Verify if head is straight with back for rep
+        # Verify if head is straight
         error_msg = "head not straight"
-        if self.detector.getAngle(23,11,7) < 130: 
+        if headAngle < 130: 
             self.headAlwaysStraight = False
             if error_msg not in self.error_dict:
                 self.error_dict[error_msg] = time.time()
 
         # =====================================================================
 
-        self.drawFeedback(frame)
+        # If no errors, then frame should be counted
+        if self.frame:
+            self.frame += 1
 
-    def completed(self):
-        # Increase the count of reps
-        if self.backAlwaysStraight and self.kneeAlwaysStraight and self.headAlwaysStraight and self.armsFullyBent and self.armsFullyExtended:
-            self.count = self.count + 1
-        
-        # Variables to determine if form is correct
-        self.backAlwaysStraight = True
-        self.kneeAlwaysStraight = True 
-        self.headAlwaysStraight = True
-        self.armsFullyBent = False
-        self.armsFullyExtended = False
-        
-        self.half_completed = False
+
+        self.drawFeedback(frame)
 
     def drawFeedback(self, frame):
         # Check error_dict to remove errors older than 2 seconds
@@ -120,7 +99,8 @@ class set:
             cv2.putText(frame, error, (x_origin,y_origin + offset), 16, 3, (0,0,255), thickness=5)
             row = row + 1
 
-        # Draws the amount of reps performed
+        # Draws the correct time in plank position
+        timeInPosition = round(self.frame / self.videoFPS, 2)
         x_origin = int(self.detector.image.shape[0]*0.2)
         y_origin = int(self.detector.image.shape[0]*0.8)
-        cv2.putText(frame, str(self.time), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
+        cv2.putText(frame, str(timeInPosition), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
