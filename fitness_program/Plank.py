@@ -12,7 +12,6 @@ class set:
         # Variables to determine rep progress
         self.starting_position = None
         self.frame = None
-        self.end_movement = None
         self.videoFPS = videoFPS
 
         # Variables to determine if form is correct (everything should be true when correct)
@@ -31,14 +30,12 @@ class set:
         return self.count
 
     def process(self, frame):
-        print("Inside process for Plank")
 
         # Use detector to analyze the frame
         self.detector.analyze(frame)
         
         # Determine if posture is in plank formation
-        inPosition = True
-        if self.frame == None and inPosition:
+        if self.backAlwaysStraight and self.kneeAlwaysStraight and self.headAlwaysStraight and self.frame == None:
             self.frame = 1
 
         # =========================== Check for Errors ========================
@@ -69,12 +66,19 @@ class set:
 
         # =====================================================================
 
-        # If no errors, then frame should be counted
-        if self.frame:
-            self.frame += 1
-
-
+        self.completed()
         self.drawFeedback(frame)
+
+    def completed(self):
+        # Increase the timer
+        if self.backAlwaysStraight and self.kneeAlwaysStraight and self.headAlwaysStraight and self.frame:
+            self.frame = self.frame + 1
+        
+        # Reset variables to determine if form is correct
+        self.backAlwaysStraight = True
+        self.kneeAlwaysStraight = True 
+        self.headAlwaysStraight = True
+
 
     def drawFeedback(self, frame):
         # Check error_dict to remove errors older than 2 seconds
@@ -100,7 +104,8 @@ class set:
             row = row + 1
 
         # Draws the correct time in plank position
-        timeInPosition = round(self.frame / self.videoFPS, 2)
-        x_origin = int(self.detector.image.shape[0]*0.2)
-        y_origin = int(self.detector.image.shape[0]*0.8)
-        cv2.putText(frame, str(timeInPosition), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
+        if self.frame:
+            timeInPosition = round(self.frame / self.videoFPS, 2)
+            x_origin = int(self.detector.image.shape[0]*0.2)
+            y_origin = int(self.detector.image.shape[0]*0.8)
+            cv2.putText(frame, str(timeInPosition), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
