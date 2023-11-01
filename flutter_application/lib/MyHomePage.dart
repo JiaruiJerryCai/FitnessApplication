@@ -15,7 +15,6 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
-  final double spacing = 25;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();

@@ -59,6 +59,27 @@ class _FourthPageState extends State<FourthPage> {
       },
     );
   }
+
+  Widget playAndPauseBtn() {
+    return ElevatedButton(
+      onPressed: () {
+        // Wrap the play or pause in a call to `setState`. This ensures the
+        // correct icon is shown.
+        setState(() {
+          // If the video is playing, pause it.
+          if (_controller.value.isPlaying) {
+            _controller.pause();
+          } else {
+            // If the video is paused, play it.
+            _controller.play();
+          }
+        });
+      },
+      child: Icon(
+        _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+      ),
+    );
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -74,24 +95,7 @@ class _FourthPageState extends State<FourthPage> {
           children: <Widget>[
             Text('Edited Video'),
             videoDemo(),
-            ElevatedButton(
-              onPressed: () {
-                // Wrap the play or pause in a call to `setState`. This ensures the
-                // correct icon is shown.
-                setState(() {
-                  // If the video is playing, pause it.
-                  if (_controller.value.isPlaying) {
-                    _controller.pause();
-                  } else {
-                    // If the video is paused, play it.
-                    _controller.play();
-                  }
-                });
-              },
-              child: Icon(
-                _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-              ),
-            ),
+            playAndPauseBtn(),
             ElevatedButton(
               onPressed: null,
               child: Text("Save Edited Video"),

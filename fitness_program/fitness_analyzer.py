@@ -5,13 +5,10 @@ import Plank
 import firebase_manager
 import cv2
 
-
+# Connect to database
+manager = firebase_manager.firebaseManager()
 
 def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True):
-
-    # Connect to database
-    if upload:
-        manager = firebase_manager.firebaseManager()
 
     # Select what video to open up and access
     video = cv2.VideoCapture(videoLocation)
