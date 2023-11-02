@@ -31,10 +31,10 @@ class _SecondPageState extends State<SecondPage> {
       _controller = VideoPlayerController.asset('assets/exercise.mp4');
     } else if (widget.title == "Pullup") {
       description = "pullyp";
-      _controller = VideoPlayerController.asset('assets/edit_bp.mp4');
+      _controller = VideoPlayerController.asset('assets/exercise.mp4');
     } else if (widget.title == "Squat") {
       description = "squatttt";
-      _controller = VideoPlayerController.asset('assets/AnalyzedPushup.mp4');
+      _controller = VideoPlayerController.asset('assets/exercise.mp4');
     }
 
     _initializeVideoPlayerFuture = _controller.initialize();

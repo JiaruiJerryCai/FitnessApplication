@@ -1,5 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 
 
 class FourthPage extends StatefulWidget {
@@ -7,7 +10,6 @@ class FourthPage extends StatefulWidget {
 
   final String title;
   final String videoLink;
-
 
   @override
   State<FourthPage> createState() => _FourthPageState();
@@ -19,10 +21,14 @@ class _FourthPageState extends State<FourthPage> {
   late VideoPlayerController _controller;
   late Future<void> _initializeVideoPlayerFuture;
 
+  late Future<String?> downloadPath;
+
   // Control what the screen does when it first renders
   @override
   void initState() {
     super.initState();
+
+    downloadPath = getDownloadPath();
     
     // Set up the video variables
     _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoLink));
@@ -37,6 +43,54 @@ class _FourthPageState extends State<FourthPage> {
     super.dispose();
   }
   
+  void saveEditedVideo(String downloadPath) async {
+    final taskId = await FlutterDownloader.enqueue(
+        url: widget.videoLink,
+        headers: {}, // optional: header send with url (auth token etc)
+        savedDir: downloadPath,
+        showNotification: true, // show download progress in status bar (for Android)
+        openFileFromNotification: true, // click on notification to open downloaded file (for Android)
+        saveInPublicStorage: true,
+      );
+  }
+
+  Widget downloadButton() {
+    return FutureBuilder<String?> (
+      future: downloadPath, 
+      builder: (context, snapshot) {
+        if(snapshot.hasData) {
+          String downloadLocation = snapshot.data as String;
+          return ElevatedButton(
+            onPressed: () { 
+              saveEditedVideo(downloadLocation); 
+            }, 
+            child: Text('Save Edited Video'),
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+    });
+
+  }
+
+  Future<String?> getDownloadPath() async {
+    Directory? directory;
+    try {
+      if (Platform.isIOS) {
+        directory = await getApplicationDocumentsDirectory();
+      } else {
+        directory = Directory('/storage/emulated/0/Download');
+        // Put file in global download folder, if for an unknown reason it didn't exist, we fallback
+        // ignore: avoid_slow_async_io
+        if (!await directory.exists()) directory = await getExternalStorageDirectory();
+      }
+    } catch (err, stack) {
+      print("Cannot get download folder path");
+      print(stack);
+    }
+    return directory?.path;
+  }
+
   Widget videoDemo() {
     return FutureBuilder(
       future: _initializeVideoPlayerFuture,
@@ -96,10 +150,7 @@ class _FourthPageState extends State<FourthPage> {
             Text('Edited Video'),
             videoDemo(),
             playAndPauseBtn(),
-            ElevatedButton(
-              onPressed: null,
-              child: Text("Save Edited Video"),
-            )
+            downloadButton(),
           ],
         ),
       ),

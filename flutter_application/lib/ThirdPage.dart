@@ -20,6 +20,7 @@ class _ThirdPageState extends State<ThirdPage> {
   late Future<String> server_response; 
   late String videolink;
   File? selectedFile;
+  bool enableNextPage = false;
 
   final picker = ImagePicker();
 
@@ -86,7 +87,9 @@ class _ThirdPageState extends State<ThirdPage> {
       print(text);
 
       setState(() {
-        videolink = text;
+        videolink = text; // Setting the video link to a variable
+        enableNextPage = true;
+
       });
 
       return text;
@@ -164,7 +167,14 @@ class _ThirdPageState extends State<ThirdPage> {
               child:Text("Connect to Exercise"),
             ),
             ElevatedButton(
-              onPressed: navigateToFourthPage,
+              onPressed: () {
+                if (enableNextPage) {
+                  navigateToFourthPage();
+                }
+                else {
+                  null;
+                }
+              }, 
               child:Text("Go To Save the Edited Video Page"),
             ),
             serverText(),

@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import json
 import fitness_analyzer
 import os
@@ -40,8 +40,9 @@ def analyzeExercise():
 
 @app.route("/exerciselist")
 def getExerciseList():
+    exerciseList = ['Pushup', 'Pullup', 'Plank', 'Squat']
+    return jsonify(exerciseList)
 
-    return 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
