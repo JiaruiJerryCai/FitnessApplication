@@ -87,10 +87,10 @@ class _MyHomePageState extends State<MyHomePage> {
           List<Widget> exerciseRows = [];
           for (int i = 0; i < exercises.length; i++) {
             if (i % 2 == 0) {
-              exercises.add(
+              exerciseRows.add(
                   customRow("assets/"+exercises[i]+".jpeg", "start", exercises[i]));
             } else {
-              exercises.add(
+              exerciseRows.add(
                   customRow("assets/"+exercises[i]+".jpeg", "end", exercises[i]));
             }
           }

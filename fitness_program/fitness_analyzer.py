@@ -29,6 +29,9 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True):
     if exercise == 'Pullup':
         analyzer = Pullup.set()
         print("Running Pullup")
+    if exercise == 'Squat':
+        analyzer = Squat.set()
+        print('Running Squat')
     if exercise == 'Plank':
         analyzer = Plank.set(VideoFPS)
         print("Running Plank")
@@ -70,5 +73,3 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True):
         return LinkToVideo
     
     return videoFile
-
-        
