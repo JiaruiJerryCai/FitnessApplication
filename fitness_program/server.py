@@ -40,7 +40,7 @@ def analyzeExercise():
 
 @app.route("/exerciselist")
 def getExerciseList():
-    exerciseList = ['Pushup', 'Pullup', 'Plank', 'Squat']
+    exerciseList = ['Pushup', 'Pullup', 'Plank', 'Squat', "MuscleUp"]
     return jsonify(exerciseList)
 
 
