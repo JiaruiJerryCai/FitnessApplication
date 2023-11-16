@@ -34,40 +34,43 @@ class set:
         # Use detector to analyze the frame
         self.detector.analyze(frame)
         
-        # Determine if posture is in plank formation
-        if self.backAlwaysStraight and self.kneeAlwaysStraight and self.headAlwaysStraight and self.frame == None:
-            self.frame = 1
+        try: 
+            # Determine if posture is in plank formation
+            if self.backAlwaysStraight and self.kneeAlwaysStraight and self.headAlwaysStraight and self.frame == None:
+                self.frame = 1
 
-        # =========================== Check for Errors ========================
-        backAngle = self.detector.getAngle(11,23,25) # Left shoulder, hip, knee
-        kneeAngle = self.detector.getAngle(23,25,27) # Left hip, knee, ankle
-        headAngle = self.detector.getAngle(7,11,23) # Left ear, shoulder, hip
-            
-        # Verify the back is straight
-        error_msg = "back not straight"  
-        if backAngle < 155 or backAngle > 190:
-            self.backAlwaysStraight = False
-            if error_msg not in self.error_dict:
-                self.error_dict[error_msg] = time.time()
+            # =========================== Check for Errors ========================
+            backAngle = self.detector.getAngle(11,23,25) # Left shoulder, hip, knee
+            kneeAngle = self.detector.getAngle(23,25,27) # Left hip, knee, ankle
+            headAngle = self.detector.getAngle(7,11,23) # Left ear, shoulder, hip
+                
+            # Verify the back is straight
+            error_msg = "back not straight"  
+            if backAngle < 155 or backAngle > 190:
+                self.backAlwaysStraight = False
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
 
-        # Verify the knee is straight
-        error_msg = "knee not straight"
-        if kneeAngle < 145: 
-            self.kneeAlwaysStraight = False
-            if error_msg not in self.error_dict:
-                self.error_dict[error_msg] = time.time()
+            # Verify the knee is straight
+            error_msg = "knee not straight"
+            if kneeAngle < 145: 
+                self.kneeAlwaysStraight = False
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
 
-        # Verify if head is straight
-        error_msg = "head not straight"
-        if headAngle < 130: 
-            self.headAlwaysStraight = False
-            if error_msg not in self.error_dict:
-                self.error_dict[error_msg] = time.time()
+            # Verify if head is straight
+            error_msg = "head not straight"
+            if headAngle < 130: 
+                self.headAlwaysStraight = False
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
 
-        # =====================================================================
+            # =====================================================================
 
-        self.completed()
-        self.drawFeedback(frame)
+            self.completed()
+            self.drawFeedback(frame)
+        except:
+            print("Error reading body")
 
     def completed(self):
         # Increase the timer

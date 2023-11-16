@@ -37,51 +37,54 @@ class set:
         # Use detector to analyze the frame
         self.detector.analyze(frame)
 
-        # Calculate Direction
-        if self.previous_location == None:
-            _, self.previous_location = self.detector.getCoordinate(23) # left shoulder
-        else:
-            # Determine direction once the person has moved
-            _, self.current_location = self.detector.getCoordinate(23)
-            if self.previous_location + (self.detector.getDistance(25,27) * 0) > self.current_location:
-                self.direction = "up" 
-            elif self.previous_location - (self.detector.getDistance(25,27) * 0) < self.current_location:
-                self.direction = "down" 
-            self.previous_location = self.current_location
-            
-        # Check if one rep has been completed
-        leftlegangle = self.detector.getAngle(23,25,27)
-        if self.direction != None:
-            if  leftlegangle < 90 and self.direction == "down":
-                self.legFullyBent = True
-                self.half_completed = True
-            if leftlegangle > 150:
-                self.legFullyExtended = True
-                if self.half_completed:
-                    self.completed()
-                    self.end_movement = True
+        try:
+            # Calculate Direction
+            if self.previous_location == None:
+                _, self.previous_location = self.detector.getCoordinate(23) # left shoulder
+            else:
+                # Determine direction once the person has moved
+                _, self.current_location = self.detector.getCoordinate(23)
+                if self.previous_location + (self.detector.getDistance(25,27) * 0) > self.current_location:
+                    self.direction = "up" 
+                elif self.previous_location - (self.detector.getDistance(25,27) * 0) < self.current_location:
+                    self.direction = "down" 
+                self.previous_location = self.current_location
+                
+            # Check if one rep has been completed
+            leftlegangle = self.detector.getAngle(23,25,27)
+            if self.direction != None:
+                if  leftlegangle < 90 and self.direction == "down":
+                    self.legFullyBent = True
+                    self.half_completed = True
+                if leftlegangle > 150:
+                    self.legFullyExtended = True
+                    if self.half_completed:
+                        self.completed()
+                        self.end_movement = True
 
-        # Mark end of ending movement
-        if self.end_movement and self.direction == "down":
-            self.end_movement = False
+            # Mark end of ending movement
+            if self.end_movement and self.direction == "down":
+                self.end_movement = False
 
-        # =========================== Check for Errors ========================
+            # =========================== Check for Errors ========================
 
-        # Verify the body is completely down
-        error_msg = "Body not low enough"
-        if not self.end_movement and self.direction == "up" and self.legFullyBent == False:
-            if error_msg not in self.error_dict:
-                self.error_dict[error_msg] = time.time()
+            # Verify the body is completely down
+            error_msg = "Body not low enough"
+            if not self.end_movement and self.direction == "up" and self.legFullyBent == False:
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
 
-        # Verify if arms were fully extended and chest was raised for rep
-        error_msg = "Body not high enough"
-        if self.direction == "down" and self.legFullyExtended == False:
-            if error_msg not in self.error_dict:
-                self.error_dict[error_msg] = time.time()
+            # Verify if arms were fully extended and chest was raised for rep
+            error_msg = "Body not high enough"
+            if self.direction == "down" and self.legFullyExtended == False:
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
 
-        # =====================================================================
+            # =====================================================================
 
-        self.drawFeedback(frame)
+            self.drawFeedback(frame)
+        except:
+            print("Error reading body")
 
     def completed(self):
         # Increase the count of reps

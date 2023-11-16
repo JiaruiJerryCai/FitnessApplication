@@ -2,6 +2,8 @@ import pose_detector
 import time
 import cv2
 
+MODIFY
+
 # Rep class used to track the completion and progress of a rep 
 # and check if the rep had any errors
 class set:
@@ -10,10 +12,9 @@ class set:
         self.detector = pose_detector.Detector()
 
         # Variables to determine rep progress
-        self.half_completed = None
+        self.bar = None
         self.previous_location = None
         self.current_location = None
-        self.starting_position = None
         self.count = 0 
         self.direction = None
         self.directionCount = 0
@@ -22,8 +23,8 @@ class set:
         # Variables to determine if form is correct (everything should be true when correct)
         # Maintained body part
         # Changing body part
-        self.handAboveNose = False
-        self.armsFullyExtended = False
+        self.armsFullyExtendedBelowBar = False
+        self.armsFullyExtendedAboveBar = False
         
         # Error Dictionary
         self.error_dict = {}
@@ -35,8 +36,8 @@ class set:
 
         # Use detector to analyze the frame
         self.detector.analyze(frame)
-
-        try: 
+        
+        try:
             # Calculate Direction
             if self.previous_location == None:
                 _, self.previous_location = self.detector.getCoordinate(0) # nose
@@ -48,21 +49,27 @@ class set:
                 elif self.previous_location - (self.detector.getDistance(13,15) * 0) < self.current_location:
                     self.direction = "down" 
                 self.previous_location = self.current_location
+
+            # Figure out if we are below or above the bar.
+            _, location_shoulder = self.detector.getCoordinate(11)
+            _, location_hand = self.detector.getCoordinate(15)
+            if location_shoulder > location_hand:
+                self.bar = "above"
+            else:
+                self.bar = "below"
                 
             # Check if one rep has been completed
-            _, location_nose = self.detector.getCoordinate(0)
-            _, location_hand = self.detector.getCoordinate(15)
             leftelbowangle = self.detector.getAngle(15,13,11)
             rightelbowangle = self.detector.getAngle(12,14,16)
             if self.direction != None:
-                if  location_nose < location_hand and self.direction == "up":
-                    self.handAboveNose = True
-                    self.half_completed = True
-                if leftelbowangle > 150 and rightelbowangle > 150:
-                    self.armsFullyExtended = True
-                    if self.half_completed:
-                        self.completed()
-                        self.end_movement = True
+                # if below bar and arms are straight
+                if self.bar == "below" and leftelbowangle > 150 and rightelbowangle > 150 and self.direction == "up":
+                    self.armsFullyExtendedBelowBar = True
+                if self.bar == "above" and leftelbowangle > 150 and rightelbowangle > 150 and self.direction == "down":
+                    self.armsFullyExtendedAboveBar = True
+                if leftelbowangle > 150 and rightelbowangle > 150 and self.armsFullyExtendedAboveBar and self.armsFullyExtendedBelowBar:
+                    self.completed()
+                    self.end_movement = True
 
             # Mark end of ending movement
             if self.end_movement and self.direction == "up":
@@ -70,39 +77,23 @@ class set:
 
             # =========================== Check for Errors ========================
 
-            # Verify the nose is above the hand
-            error_msg = "head not high enough"
-            if self.handAboveNose == False  and self.direction == "down" and self.end_movement == False:
-                self.directionCount = self.directionCount + 1
-                if self.directionCount == 10:
-                    if error_msg not in self.error_dict:
-                        self.error_dict[error_msg] = time.time()
-            else:
-                self.directionCount = 0
-
-            # Arms did not extend fully
-            error_msg = "arms not extended"
-            if self.direction == "up" and self.armsFullyExtended == False and self.end_movement == False:
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
-
+            
             # =====================================================================
 
             self.drawFeedback(frame)
         except:
             print("Error reading body")
 
+
     def completed(self):
         # Increase the count of reps
-        if self.handAboveNose and self.armsFullyExtended:
+        if self.armsFullyExtendedAboveBar and self.armsFullyExtendedBelowBar:
             self.count = self.count + 1
         
         # Variables to determine if form is correct
         #Changing body part
-        self.handAboveNose = False
-        self.armsFullyExtended = False
-
-        self.half_completed = False
+        self.armsFullyExtendedAboveBar = False
+        self.armsFullyExtendedBelowBar = False
 
 
     def drawFeedback(self, frame):
