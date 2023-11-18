@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/SecondPage.dart';
 import 'package:http/http.dart' as http;
@@ -22,88 +23,85 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late Future<List> server_response; 
+  late Future<Map> server_response; 
 
   // Control what the screen does when it first renders
   @override
   void initState() {
     super.initState();
     
-    server_response = sendRequest('http://127.0.0.1:5000/exerciselist');
+    server_response = sendRequest('http://localhost:5000/exerciseinfo');
   }
 
-  void navigateToSecondPage(String exercise) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SecondPage(title: exercise)));
+  void navigateToSecondPage(String exercise, Map exerciseObj) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SecondPage(title: exercise, info: exerciseObj)));
   }
 
   // Method used to send a request to the server and return a response value
-  Future<List> sendRequest(String url) async {
+  Future<Map> sendRequest(String url) async {
     try {
       String urlLink = url;
       // Define destination link
       Uri link = Uri.parse(urlLink);
 
-      // Create request
-      http.MultipartRequest request = http.MultipartRequest('GET', link);
-
       // Send the request and get a response back
-      final server_response = await request.send();
-      final response_data = await server_response.stream.bytesToString();
+      final server_response = await http.get(link);
+
+      final Map<String, dynamic> exerciseInfo = jsonDecode(server_response.body);
+      // print("Map: ");
+      // print(exerciseInfo);
       
-      List exercises = stringToList(response_data);
-      return exercises;
+      // final List<String> exercises = exerciseInfo.keys.toList();
+      // print("Exercises in Map: ");
+      // print(exercises);
+      
+      // for(int i=0; i<exercises.length; i++) {
+      //   print("Key: " + exercises[i]);
+      //   print("value: ");
+      //   print(exerciseInfo[exercises[i]]);
+      //   print(exerciseInfo[exercises[i]]["image"]);
+      //   print(exerciseInfo[exercises[i]]["demo_video"]);
+      //   print(exerciseInfo[exercises[i]]["description"]);
+      // }
+
+
+      return exerciseInfo;
 
     } catch (e) {
       print('error caught: $e');
     }
 
-    return [];
-  }
-
-  List stringToList(String text) {
-    List myList = [];
-
-    // Split the string by ',' and return the elements in a list
-    List splitList = text.split(',');
-    for (int i = 0; i < splitList.length; i++) {
-      String myWord = splitList[i];
-      int start = myWord.indexOf('"') + 1;
-      int end = myWord.lastIndexOf('"');
-      myWord = myWord.substring(start, end);
-      myList.add(myWord);
-    }
-
-    return myList;
+    return {};
   }
 
 
   Widget ExerciseListView() {
-    return FutureBuilder<List> (
+    return FutureBuilder<Map> (
       future: server_response, 
       builder: (context, snapshot) {
         if(snapshot.hasData) {
-          List exercises = snapshot.data as List;
+          Map exerciseInfo = snapshot.data as Map;
+
+          final List exercises = exerciseInfo.keys.toList();
 
           List<Widget> exerciseRows = [];
           for (int i = 0; i < exercises.length; i++) {
             if (i % 2 == 0) {
               exerciseRows.add(
-                  customRow("assets/"+exercises[i]+".jpeg", "start", exercises[i]));
+                  customRow(exerciseInfo[exercises[i]], "start", exercises[i]));
             } else {
               exerciseRows.add(
-                  customRow("assets/"+exercises[i]+".jpeg", "end", exercises[i]));
+                  customRow(exerciseInfo[exercises[i]], "end", exercises[i]));
             }
           }
           return ListView(children: exerciseRows);
         } else {
           return Text("Unable to get exercises from server...");
         }
-
     });
-
   }
 
-  Widget customRow(String imageLocation, String position, String text) {
+  Widget customRow(Map exerciseObj, String position, String exerciseName) {
       if(position == "start") {
         return Row(
                 mainAxisAlignment: MainAxisAlignment.start, // effected by position
@@ -113,17 +111,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 200,
                     height: 200,
                     child: ElevatedButton(
-                      onPressed: () { navigateToSecondPage(text); },
+                      onPressed: () { navigateToSecondPage(exerciseName, exerciseObj); },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           ClipRRect(
                             borderRadius: BorderRadius.circular(24),
                             child: Image(
-                            image: AssetImage(imageLocation) // image will be based on argument
+                            image: NetworkImage(exerciseObj["image"]) // image will be based on argument
                             ),
                           ),
-                          Text(text)
+                          Text(exerciseName)
                         ]
                       )
                     ),
@@ -139,17 +137,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 200,
                     height: 200,
                     child: ElevatedButton(
-                      onPressed: () { navigateToSecondPage(text); },
+                      onPressed: () { navigateToSecondPage(exerciseName, exerciseObj); },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           ClipRRect(
                             borderRadius: BorderRadius.circular(24),
                             child: Image(
-                            image: AssetImage(imageLocation) // image will be based on argument
+                            image: NetworkImage(exerciseObj["image"]) // image will be based on argument
                             ),
                           ),
-                          Text(text)
+                          Text(exerciseName)
                         ]
                       )
                     ),
@@ -161,7 +159,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,

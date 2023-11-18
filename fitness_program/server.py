@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
-import json
 import fitness_analyzer
 import os
+from exercise_table import exerciseTable
 
 app = Flask(__name__)
 
@@ -38,10 +38,18 @@ def analyzeExercise():
     print(link)
     return link
 
-@app.route("/exerciselist")
-def getExerciseList():
-    exerciseList = ['Pushup', 'Pullup', 'Plank', 'Squat', "MuscleUp"]
-    return jsonify(exerciseList)
+# @app.route("/exerciselist")
+# def getExerciseList():
+#     exerciseList = ['Pushup', 'Pullup', 'Plank', 'Squat']
+#     return jsonify(exerciseList)
+
+
+@app.route("/exerciseinfo", methods=['GET', 'POST'])
+def getExerciseInfo():
+    exerciseInfo = exerciseTable
+    return jsonify(exerciseInfo)
+
+
 
 
 if __name__ == '__main__':

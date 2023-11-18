@@ -3,9 +3,10 @@ import 'package:flutter_application/ThirdPage.dart';
 import 'package:video_player/video_player.dart';
 
 class SecondPage extends StatefulWidget {
-  const SecondPage({super.key, required this.title});
+  const SecondPage({super.key, required this.title, required this.info});
 
   final String title;
+  final Map info;
 
 
   @override
@@ -25,23 +26,8 @@ class _SecondPageState extends State<SecondPage> {
     // Create and store the VideoPlayerController. The VideoPlayerController
     // offers several different constructors to play videos from assets, files,
     // or the internet.
-
-    if (widget.title == "Pushup") {
-      description = "\t Pushups are calisthenic exercises that primarily targets the muscles of the chest, shoulders, and triceps. The exercise involves the individual lying prone on the ground, placing their hands slightly wider than shoulder-width apart, and then pushing their body up and down using the arms. The core muscles also play a role in stabilizing the body during the movement. Push-ups are a versatile and effective bodyweight exercise that can be adapted to different fitness levels and variations to target various muscle groups. They are commonly included in fitness routines to improve upper body strength and endurance.";
-      _controller = VideoPlayerController.asset('assets/Pushup.mp4');
-    } else if (widget.title == "Pullup") {
-      description = "\t Pullups are strength training exercises that target the muscles of the upper body, particularly the back, shoulders, and arms. The exercise involves suspending oneself from a horizontal bar using an overhand grip (palms facing away from the body) with hands placed slightly wider than shoulder-width apart. The individual then pulls their body upward by bending their arms at the elbows until the chin reaches or clears the bar. Pull-ups primarily engage the latissimus dorsi (lats) muscles, as well as the biceps, rhomboids, and various muscles in the upper back. \n \t Pull-ups are considered a challenging bodyweight exercise, requiring upper body strength and control. They can be performed with different grip variations, such as wide grip, narrow grip, or underhand (chin-up), to target various muscle groups. Pull-ups are commonly incorporated into strength training and calisthenics routines to enhance overall upper body strength and muscular development.";
-      _controller = VideoPlayerController.asset('assets/Pullup.mp4');
-    } else if (widget.title == "Squat") {
-      description = "\t Squat are compound exercises that target multiple muscle groups, including the quadriceps, hamstrings, glutes, and muscles in the lower back. It is a fundamental movement pattern that involves bending the knees and hips while keeping the back straight, typically with a downward and upward motion.";
-      _controller = VideoPlayerController.asset('assets/Squat.mp4');
-    } else if (widget.title == "Plank") {
-      description = "\t Planks are core-strengthening exercises that involve maintaining a static position, typically in a straight line from head to heels. It is an isometric exercise, meaning the muscles are contracted without any joint movement. \n \t Planks primarily target the core muscles, including the rectus abdominis, transverse abdominis, and obliques.";
-      _controller = VideoPlayerController.asset('assets/Plank.mp4');
-    } else if (widget.title == "MuscleUp") {
-      description = "_________________";
-      _controller = VideoPlayerController.asset('assets/MuscleUp.mp4');
-    }
+    description = widget.info["description"];
+    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.info["demo_video"]));
     
     _initializeVideoPlayerFuture = _controller.initialize();
 
@@ -82,7 +68,7 @@ Widget videoDemo() {
 // VideoPlayerController to finish initializing.
   
   void navigateToThirdPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ThirdPage(title: "Camera", exercise: widget.title)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ThirdPage(title: "Choose a video", exercise: widget.title)));
   }
 
   @override

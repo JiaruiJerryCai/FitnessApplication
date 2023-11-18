@@ -64,7 +64,7 @@ class _FourthPageState extends State<FourthPage> {
             onPressed: () { 
               saveEditedVideo(downloadLocation); 
             }, 
-            child: Text('Save Edited Video'),
+            child: Text('Save Analyzed Video'),
           );
         } else {
           return CircularProgressIndicator();
@@ -88,6 +88,7 @@ class _FourthPageState extends State<FourthPage> {
       print("Cannot get download folder path");
       print(stack);
     }
+    print(directory?.path);
     return directory?.path;
   }
 
@@ -147,7 +148,7 @@ class _FourthPageState extends State<FourthPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text('Edited Video'),
+            Text('Analyzed Video'),
             videoDemo(),
             playAndPauseBtn(),
             downloadButton(),

@@ -98,7 +98,7 @@ class _ThirdPageState extends State<ThirdPage> {
       print('error caught: $e');
     }
 
-    return "Error caught";
+    return "Please select a video before analyzing";
   }
   // Custom FutureBuilder Widget
   // Widget used to render the possible values of a Future
@@ -113,9 +113,7 @@ class _ThirdPageState extends State<ThirdPage> {
         } else {
           return CircularProgressIndicator();
         }
-
     });
-
   }
 
   // The button action to start a recording or select a file from library
@@ -136,6 +134,17 @@ class _ThirdPageState extends State<ThirdPage> {
       }, 
     ); 
   } 
+
+  Widget nextPageBtn(bool enableNextPage) {
+    if(enableNextPage) {
+      return ElevatedButton(
+        onPressed: navigateToFourthPage,
+        child:Text("Go To Save the Edited Video Page"),
+      );
+    } else {
+      return Text("Please select a video");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,19 +173,9 @@ class _ThirdPageState extends State<ThirdPage> {
             ),
             ElevatedButton(
               onPressed: () { setState(() { server_response = sendExerciseRequest('http://127.0.0.1:5000/exercisevideo'); }); } ,
-              child:Text("Connect to Exercise"),
+              child:Text("Analyze Exercise"),
             ),
-            ElevatedButton(
-              onPressed: () {
-                if (enableNextPage) {
-                  navigateToFourthPage();
-                }
-                else {
-                  null;
-                }
-              }, 
-              child:Text("Go To Save the Edited Video Page"),
-            ),
+            nextPageBtn(enableNextPage),
             serverText(),
           ],
         ),
