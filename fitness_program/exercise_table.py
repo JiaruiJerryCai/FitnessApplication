@@ -20,9 +20,9 @@ exerciseTable = {
         "demo_video": "https://firebasestorage.googleapis.com/v0/b/fitnessdb-1787d.appspot.com/o/assets%2Fvideos%2Fplank.mp4?alt=media&token=bd96154b-1508-4e8e-a7d4-9dc555280d92",
         "description": "\t Planks are core-strengthening exercises that involve maintaining a static position, typically in a straight line from head to heels. It is an isometric exercise, meaning the muscles are contracted without any joint movement. \n \t Planks primarily target the core muscles, including the rectus abdominis, transverse abdominis, and obliques."
     },
-    # "Curl" : {
-    #     "image": "https://www.verywellfit.com/thmb/plk9oJP3KcuRnBaq8bk3sGrsVjM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/81-3498604-Bicep-arm-curlsGIF2-c7c59f252b1a4ef9b1e181ca05e96084.jpg",
-    #     "demo_video": "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4",
-    #     "description": "This is the curl description."
-    # },
+    "Sit Up" : {
+        "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fimages%2Fsitup.jpeg?alt=media&token=7e82659d-c620-4278-9912-454359446250',
+        "demo_video": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fsitup.mp4?alt=media&token=000f761d-1723-4d37-99af-6d3baf768190',
+        "description": 'A sit-up is a classic abdominal exercise that targets the muscles in the core, particularly the rectus abdominis. This exercise is performed by lying on your back with your knees bent and feet flat on the ground, and then lifting your upper body off the floor towards your knees. The movement involves flexing the spine and engaging the abdominal muscles to lift the torso, promoting strength and endurance in the abdominal region.',
+    }
 }

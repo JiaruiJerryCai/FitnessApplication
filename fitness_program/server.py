@@ -38,11 +38,6 @@ def analyzeExercise():
     print(link)
     return link
 
-# @app.route("/exerciselist")
-# def getExerciseList():
-#     exerciseList = ['Pushup', 'Pullup', 'Plank', 'Squat']
-#     return jsonify(exerciseList)
-
 
 @app.route("/exerciseinfo", methods=['GET', 'POST'])
 def getExerciseInfo():

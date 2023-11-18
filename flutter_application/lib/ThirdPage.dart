@@ -58,7 +58,7 @@ class _ThirdPageState extends State<ThirdPage> {
       print('error caught: $e');
     }
 
-    return "Error caught";
+    return "Error connecting to server!";
   }
 
   // Method used to send a request to the server and return a response value
@@ -91,6 +91,7 @@ class _ThirdPageState extends State<ThirdPage> {
         enableNextPage = true;
 
       });
+      navigateToFourthPage();
 
       return text;
 
@@ -127,6 +128,7 @@ class _ThirdPageState extends State<ThirdPage> {
       () { 
         if (xfilePick != null) { 
           selectedFile = File(pickedFile!.path); 
+          server_response = sendExerciseRequest('http://127.0.0.1:5000/exercisevideo');
         } else { 
           ScaffoldMessenger.of(context).showSnackBar(// is this context <<< 
               const SnackBar(content: Text('Nothing is selected'))); 
@@ -161,21 +163,20 @@ class _ThirdPageState extends State<ThirdPage> {
             ElevatedButton(
               onPressed: () {
                 getVideo(ImageSource.gallery); 
-                print(selectedFile);
-              } ,
+              },
               child:Text("Import Media"),
             ),
             ElevatedButton(
               onPressed: () {
                 getVideo(ImageSource.camera);
-              } ,
+              },
               child:Text("Start Recording"),
             ),
-            ElevatedButton(
-              onPressed: () { setState(() { server_response = sendExerciseRequest('http://127.0.0.1:5000/exercisevideo'); }); } ,
-              child:Text("Analyze Exercise"),
-            ),
-            nextPageBtn(enableNextPage),
+            // ElevatedButton(
+            //   onPressed: () { setState(() { server_response = sendExerciseRequest('http://127.0.0.1:5000/exercisevideo'); }); } ,
+            //   child:Text("Analyze Exercise"),
+            // ),
+            // nextPageBtn(enableNextPage),
             serverText(),
           ],
         ),
