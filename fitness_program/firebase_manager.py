@@ -11,7 +11,8 @@ class firebaseManager:
         if not firebase_admin._apps:
             cred = credentials.Certificate('key.json') # Provide the key(password) to the database
             firebase_admin.initialize_app(cred, {
-                'storageBucket':'fitnessdatabase-243dc.appspot.com'  # Provide the database name we want to connect to gs://fitnessdb-1787d.appspot.com/assets/videos
+                'storageBucket':'fitnessdb-1787d.appspot.com/assets/videos'  # Provide the database name we want to connect to gs://fitnessdb-1787d.appspot.com/assets/videos
+                #fitnessdatabase-243dc.appspot.com
             }) 
             self.bucket = storage.bucket() # self.bucket is a variable that contains information about the database we connected to
 

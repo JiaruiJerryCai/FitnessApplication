@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     
-    server_response = sendRequest('http://localhost:5000/exerciseinfo');
+    server_response = sendRequest('http://3.18.103.214:5000/exerciseinfo');
   }
 
   void navigateToSecondPage(String exercise, Map exerciseObj) {

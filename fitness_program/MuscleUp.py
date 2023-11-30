@@ -2,8 +2,6 @@ import pose_detector
 import time
 import cv2
 
-# MODIFY
-
 # Rep class used to track the completion and progress of a rep 
 # and check if the rep had any errors
 class set:

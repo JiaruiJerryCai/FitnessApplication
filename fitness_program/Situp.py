@@ -20,8 +20,6 @@ class set:
         self.handCloseToHead = True
 
         # Changing body part
-        self.bodyNotBentEnough = False
-        self.bodyNotStretchedEnough = False
         
         # Error Dictionary
         self.error_dict = {}
@@ -64,13 +62,6 @@ class set:
                 self.legNotStretched = False
                 if error_msg not in self.error_dict:
                     self.error_dict[error_msg] = time.time()
-
-
-            # Check if body is bent halfway
-
-
-            # Check if body is stretched at the end
-
 
             # =====================================================================
 

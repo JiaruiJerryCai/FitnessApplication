@@ -32,7 +32,7 @@ class _ThirdPageState extends State<ThirdPage> {
   @override
   void initState() {
     super.initState();
-    server_response = sendRequest('http://127.0.0.1:5000/');
+    server_response = sendRequest('http://3.18.103.214:5000/');
   }
 
   // Method used to send a request to the server and return a response value
@@ -127,8 +127,8 @@ class _ThirdPageState extends State<ThirdPage> {
     setState( 
       () { 
         if (xfilePick != null) { 
-          selectedFile = File(pickedFile!.path); 
-          server_response = sendExerciseRequest('http://127.0.0.1:5000/exercisevideo');
+          selectedFile = File(pickedFile!.path);
+          server_response = sendExerciseRequest('http://3.18.103.214:5000/exercisevideo');
         } else { 
           ScaffoldMessenger.of(context).showSnackBar(// is this context <<< 
               const SnackBar(content: Text('Nothing is selected'))); 
@@ -172,11 +172,6 @@ class _ThirdPageState extends State<ThirdPage> {
               },
               child:Text("Start Recording"),
             ),
-            // ElevatedButton(
-            //   onPressed: () { setState(() { server_response = sendExerciseRequest('http://127.0.0.1:5000/exercisevideo'); }); } ,
-            //   child:Text("Analyze Exercise"),
-            // ),
-            // nextPageBtn(enableNextPage),
             serverText(),
           ],
         ),

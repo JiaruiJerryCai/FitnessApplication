@@ -18,13 +18,11 @@ class set:
         self.end_movement = None
         
         # Variables to determine if form is correct (everything should be true when correct)
-        # Maintained body part
-        self.straightBack = True
-        self.straightHead = True
-
-        # Changing body part
-        self.legFullyBent = False
-        self.legFullyExtended = False
+        #Maintained body part
+        
+        #Changing body part
+        self.armsFullyBent = False
+        self.armsFullyExtended = False
         
         # Error Dictionary
         self.error_dict = {}
@@ -36,28 +34,29 @@ class set:
 
         # Use detector to analyze the frame
         self.detector.analyze(frame)
-
+        
         try:
             # Calculate Direction
             if self.previous_location == None:
-                _, self.previous_location = self.detector.getCoordinate(23) # left hip
+                _, self.previous_location = self.detector.getCoordinate(11) # left shoulder
             else:
                 # Determine direction once the person has moved
-                _, self.current_location = self.detector.getCoordinate(23)
-                if self.previous_location + (self.detector.getDistance(25,27) * 0) > self.current_location:
-                    self.direction = "up" 
-                elif self.previous_location - (self.detector.getDistance(25,27) * 0) < self.current_location:
-                    self.direction = "down" 
+                _, self.current_location = self.detector.getCoordinate(11)
+                if self.previous_location - (self.detector.getDistance(13,15) * 0.04) > self.current_location:
+                    self.direction = "up" # up
+                elif self.previous_location + (self.detector.getDistance(13,15) * 0.04) < self.current_location:
+                    self.direction = "down" #down
                 self.previous_location = self.current_location
                 
+                
             # Check if one rep has been completed
-            leftlegangle = self.detector.getAngle(23,25,27)
             if self.direction != None:
-                if  leftlegangle < 90 and self.direction == "down":
-                    self.legFullyBent = True
+                leftelbowangle = self.detector.getAngle(15,13,11)
+                if leftelbowangle < 70 and self.direction == "down":
+                    self.armsFullyBent = True
                     self.half_completed = True
-                if leftlegangle > 150:
-                    self.legFullyExtended = True
+                if leftelbowangle > 140:
+                    self.armsFullyExtended = True
                     if self.half_completed:
                         self.completed()
                         self.end_movement = True
@@ -67,16 +66,39 @@ class set:
                 self.end_movement = False
 
             # =========================== Check for Errors ========================
+                
+            # Verify the back is straight the entire rep
+            error_msg = "back not straight"
+            angleofleftbutt = self.detector.getAngle(25, 23, 11)
+            if angleofleftbutt < 155 or angleofleftbutt > 190: 
+                self.backAlwaysStraight = False
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
 
-            # Verify the body is completely down
-            error_msg = "Body not low enough"
-            if not self.end_movement and self.direction == "up" and self.legFullyBent == False:
+            # Verify the knee was stright the entire rep
+            error_msg = "knee not straight"
+            angleofleftknee = self.detector.getAngle(23, 25, 27)
+            if angleofleftknee < 145: 
+                self.kneeAlwaysStraight = False
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
+
+            # Verify if arms were fully bent and chest was lowered for rep
+            error_msg = "chest not low enough"
+            if not self.end_movement and self.direction == "up" and self.armsFullyBent == False:
                 if error_msg not in self.error_dict:
                     self.error_dict[error_msg] = time.time()
 
             # Verify if arms were fully extended and chest was raised for rep
-            error_msg = "Body not high enough"
-            if self.direction == "down" and self.legFullyExtended == False:
+            error_msg = "chest not high enough"
+            if self.direction == "down" and self.armsFullyExtended == False:
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
+
+            # Verify if head is straight with back for rep
+            error_msg = "head not straight"
+            if self.detector.getAngle(23,11,7) < 130: 
+                self.headAlwaysStraight = False
                 if error_msg not in self.error_dict:
                     self.error_dict[error_msg] = time.time()
 
@@ -92,11 +114,13 @@ class set:
             self.count = self.count + 1
         
         # Variables to determine if form is correct
-        self.straightBack = True
-        self.straightHead = True
-
-        self.legFullyBent = False
-        self.legFullyExtended = False
+        self.backAlwaysStraight = True
+        self.kneeAlwaysStraight = True 
+        self.headAlwaysStraight = True
+        self.armsFullyBent = False
+        self.armsFullyExtended = False
+        
+        self.half_completed = False
 
     def drawFeedback(self, frame):
         # Check error_dict to remove errors older than 2 seconds
