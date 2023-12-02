@@ -69,40 +69,7 @@ class set:
 
             # =========================== Check for Errors ========================
                 
-            # Verify the back is straight the entire rep
-            error_msg = "back not straight"
-            angleofleftbutt = self.detector.getAngle(25, 23, 11)
-            if angleofleftbutt < 155 or angleofleftbutt > 190: 
-                self.backAlwaysStraight = False
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
-
-            # Verify the knee was stright the entire rep
-            error_msg = "knee not straight"
-            angleofleftknee = self.detector.getAngle(23, 25, 27)
-            if angleofleftknee < 145: 
-                self.kneeAlwaysStraight = False
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
-
-            # Verify if arms were fully bent and chest was lowered for rep
-            error_msg = "chest not low enough"
-            if not self.end_movement and self.direction == "up" and self.armsFullyBent == False:
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
-
-            # Verify if arms were fully extended and chest was raised for rep
-            error_msg = "chest not high enough"
-            if self.direction == "down" and self.armsFullyExtended == False:
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
-
-            # Verify if head is straight with back for rep
-            error_msg = "head not straight"
-            if self.detector.getAngle(23,11,7) < 130: 
-                self.headAlwaysStraight = False
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
+            
 
             # =====================================================================
 

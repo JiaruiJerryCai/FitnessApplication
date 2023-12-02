@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import fitness_analyzer
 import os
 from exercise_table import exerciseTable
@@ -45,6 +45,9 @@ def getExerciseInfo():
     return jsonify(exerciseInfo)
 
 
+@app.route("/privacy-policy")
+def privacyPolicy():
+    return render_template("privacyPolicy.html")
 
 
 if __name__ == '__main__':

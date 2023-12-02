@@ -16,14 +16,15 @@ class set:
         self.count = 0 
         self.direction = None
         self.end_movement = None
+        self.pose = None  # "open" or "close" 
+        self.reachedTop =  False
+        self.reachedBottom = True
         
         # Variables to determine if form is correct (everything should be true when correct)
         #Maintained body part
         
         #Changing body part
-        self.armsFullyBent = False
-        self.armsFullyExtended = False
-        
+
         # Error Dictionary
         self.error_dict = {}
 
@@ -38,10 +39,10 @@ class set:
         try:
             # Calculate Direction
             if self.previous_location == None:
-                _, self.previous_location = self.detector.getCoordinate(11) # left shoulder
+                _, self.previous_location = self.detector.getCoordinate(0) # left shoulder
             else:
                 # Determine direction once the person has moved
-                _, self.current_location = self.detector.getCoordinate(11)
+                _, self.current_location = self.detector.getCoordinate(0)
                 if self.previous_location - (self.detector.getDistance(13,15) * 0.04) > self.current_location:
                     self.direction = "up" # up
                 elif self.previous_location + (self.detector.getDistance(13,15) * 0.04) < self.current_location:
@@ -49,58 +50,29 @@ class set:
                 self.previous_location = self.current_location
                 
                 
-            # Check if one rep has been completed
+            # Check if one half of the jumping jack has been completed
             if self.direction != None:
-                leftelbowangle = self.detector.getAngle(15,13,11)
-                if leftelbowangle < 70 and self.direction == "down":
-                    self.armsFullyBent = True
-                    self.half_completed = True
-                if leftelbowangle > 140:
-                    self.armsFullyExtended = True
-                    if self.half_completed:
-                        self.completed()
-                        self.end_movement = True
+
+                # Count one jump
+                if self.direction == "down":
+                    self.reachedTop = True
+                if self.direction == "up" and self.reachedTop:
+                    self.completed()
+
 
             # Mark end of ending movement
             if self.end_movement and self.direction == "down":
                 self.end_movement = False
 
             # =========================== Check for Errors ========================
-                
-            # Verify the back is straight the entire rep
-            error_msg = "back not straight"
-            angleofleftbutt = self.detector.getAngle(25, 23, 11)
-            if angleofleftbutt < 155 or angleofleftbutt > 190: 
-                self.backAlwaysStraight = False
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
 
-            # Verify the knee was stright the entire rep
-            error_msg = "knee not straight"
-            angleofleftknee = self.detector.getAngle(23, 25, 27)
-            if angleofleftknee < 145: 
-                self.kneeAlwaysStraight = False
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
+            if self.pose == "open":
+                # Errors for open pose
 
-            # Verify if arms were fully bent and chest was lowered for rep
-            error_msg = "chest not low enough"
-            if not self.end_movement and self.direction == "up" and self.armsFullyBent == False:
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
 
-            # Verify if arms were fully extended and chest was raised for rep
-            error_msg = "chest not high enough"
-            if self.direction == "down" and self.armsFullyExtended == False:
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
+            if self.pose == "close":
+                # Errors for close pose
 
-            # Verify if head is straight with back for rep
-            error_msg = "head not straight"
-            if self.detector.getAngle(23,11,7) < 130: 
-                self.headAlwaysStraight = False
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
 
             # =====================================================================
 
@@ -110,17 +82,16 @@ class set:
 
     def completed(self):
         # Increase the count of reps
-        if self.backAlwaysStraight and self.kneeAlwaysStraight and self.headAlwaysStraight and self.armsFullyBent and self.armsFullyExtended:
-            self.count = self.count + 1
+        self.count = self.count + 0.5
+
+        if self.pose == "open":
+            self.pose = "close"
+        elif self.pose == "close":
+            self.pose = "open"
         
         # Variables to determine if form is correct
-        self.backAlwaysStraight = True
-        self.kneeAlwaysStraight = True 
-        self.headAlwaysStraight = True
-        self.armsFullyBent = False
-        self.armsFullyExtended = False
-        
-        self.half_completed = False
+        self.reachedTop = False
+
 
     def drawFeedback(self, frame):
         # Check error_dict to remove errors older than 2 seconds

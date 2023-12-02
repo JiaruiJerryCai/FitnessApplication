@@ -45,4 +45,5 @@ exerciseTable = {
     #     "demo_video": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fsitup.mp4?alt=media&token=000f761d-1723-4d37-99af-6d3baf768190',
     #     "description": 'A sit-up is a classic abdominal exercise that targets the muscles in the core, particularly the rectus abdominis. This exercise is performed by lying on your back with your knees bent and feet flat on the ground, and then lifting your upper body off the floor towards your knees. The movement involves flexing the spine and engaging the abdominal muscles to lift the torso, promoting strength and endurance in the abdominal region.',
     # }
+    # "Lunge"
 }

@@ -75,6 +75,18 @@ class set:
 
             # =========================== Check for Errors ========================
 
+            # Error: Reached top of bar, but failed to straighten arms above the bar
+            error_msg = "failed to straighten arms above the bar"
+            if self.direction == "down" and self.bar == "above" and self.armsFullyExtendedAboveBar == False:
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
+
+
+            # Error: Failed to straighten arm below the bar (completing the movement) before starting the next rep
+            error_msg = "failed to straighten arms below the bar"
+            if self.direction == "up" and self.bar == "below" and self.armsFullyExtendedBelowBar == False:
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
             
             # =====================================================================
 
