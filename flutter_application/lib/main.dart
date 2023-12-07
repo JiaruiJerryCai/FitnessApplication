@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/MyApp.dart';
+import 'package:flutter_application/my_app.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
 void main() async {
