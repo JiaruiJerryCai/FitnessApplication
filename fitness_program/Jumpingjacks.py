@@ -16,14 +16,17 @@ class set:
         self.count = 0 
         self.direction = None
         self.end_movement = None
-        self.pose = "close"  # "open" or "close" 
+        self.posture = "open"  # "open" or "close" 
         self.reachedTop =  False
         self.reachedBottom = True
         
         # Variables to determine if form is correct (everything should be true when correct)
-        #Maintained body part
+        # Maintained body part
         
-        #Changing body part
+        # Changing body part
+        self.armRaised = None
+        self.armClosed = None
+
 
         # Error Dictionary
         self.error_dict = {}
@@ -59,6 +62,19 @@ class set:
                 if self.direction == "up" and self.reachedTop:
                     self.completed()
 
+            # Detect if arm is raised
+            shoulderAngle = self.detector.getAngle(13, 11, 23) # Left shoulder
+            if self.posture == "open":
+                print("currently open " + str(shoulderAngle) + " " + str(shoulderAngle > 100))
+                if int(shoulderAngle) > 100:
+                    print("Helo you did it")
+                    self.armRaised == True
+
+            # Detect if arm is closed
+            if self.posture == "close":
+                if shoulderAngle < 50:
+                    self.armClosed == True
+
 
             # Mark end of ending movement
             if self.end_movement and self.direction == "down":
@@ -66,22 +82,21 @@ class set:
 
             # =========================== Check for Errors ========================
 
-            armAngle = self.detector.getAngle(13,11,23)
-            if self.pose == "open":
-                # Errors for open pose
-                # Verify if the arm is raised high enough
+            # Verify if the arm is raised high enough            
+            if self.posture == "close":
                 error_msg = "Arms not raised high enough"
-                if armAngle < 100  and self.direction == "down":
-                    if error_msg not in self.error_dict:
-                        self.error_dict[error_msg] = time.time()
-            
+                if self.armRaised:
+                    if self.armRaised == False:
+                        if error_msg not in self.error_dict:
+                            self.error_dict[error_msg] = time.time()
 
-            if self.pose == "close":
-                # Errors for close pose
-                error_msg = "Arms not closed"
-                if armAngle > 10  and self.direction == "up":
-                    if error_msg not in self.error_dict:
-                        self.error_dict[error_msg] = time.time()
+
+            if self.posture == "open":
+                error_msg = "Arms not closed enough"
+                if self.armClosed:
+                    if self.armClosed == False:
+                        if error_msg not in self.error_dict:
+                            self.error_dict[error_msg] = time.time()
 
             # =====================================================================
 
@@ -90,14 +105,18 @@ class set:
             print("Error reading body")
 
     def completed(self):
+        print("hit completed")
         # Increase the count of reps
-        self.count = self.count + 0.5
+        if (self.posture == "close" and self.armClosed == True) or (self.posture == "open" and self.armRaised == True):
+            self.count = self.count + 0.5
 
-        if self.pose == "open":
-            self.pose = "close"
-        elif self.pose == "close":
-            self.pose = "open"
-        
+        if self.posture == "open":
+            self.posture = "close"
+            self.armRaised = False
+        elif self.posture == "close":
+            self.posture = "open"
+            self.armClosed = False
+
         # Variables to determine if form is correct
         self.reachedTop = False
 
@@ -129,3 +148,17 @@ class set:
         x_origin = int(self.detector.image.shape[0]*0.2)
         y_origin = int(self.detector.image.shape[0]*0.8)
         cv2.putText(frame, str(self.count), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
+        cv2.putText(frame, str(self.posture), (x_origin, y_origin + 80), 16, 3, (0,0,255), thickness=5)
+        if self.armClosed:
+            cv2.putText(frame, "ArmClosed: True", (x_origin, y_origin + 160), 16, 3, (0,0,255), thickness=5)
+        else: 
+            cv2.putText(frame, "ArmClosed: False", (x_origin, y_origin + 160), 16, 3, (0,0,255), thickness=5)
+  
+        if self.armRaised:
+            cv2.putText(frame, "ArmRaised: True", (x_origin, y_origin + 240), 16, 3, (0,0,255), thickness=5)
+        else:
+            cv2.putText(frame, "ArmRaised: False", (x_origin, y_origin + 240), 16, 3, (0,0,255), thickness=5)
+            
+
+
+        
