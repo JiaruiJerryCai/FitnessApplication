@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/submit_video_page.dart';
+import 'package:DynamicFit/submit_video_page.dart';
 import 'package:video_player/video_player.dart';
 
 class DemoPage extends StatefulWidget {

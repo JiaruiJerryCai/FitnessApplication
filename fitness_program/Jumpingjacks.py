@@ -16,7 +16,7 @@ class set:
         self.count = 0 
         self.direction = None
         self.end_movement = None
-        self.pose = None  # "open" or "close" 
+        self.pose = "close"  # "open" or "close" 
         self.reachedTop =  False
         self.reachedBottom = True
         
@@ -66,13 +66,22 @@ class set:
 
             # =========================== Check for Errors ========================
 
+            armAngle = self.detector.getAngle(13,11,23)
             if self.pose == "open":
                 # Errors for open pose
-
+                # Verify if the arm is raised high enough
+                error_msg = "Arms not raised high enough"
+                if armAngle < 100  and self.direction == "down":
+                    if error_msg not in self.error_dict:
+                        self.error_dict[error_msg] = time.time()
+            
 
             if self.pose == "close":
                 # Errors for close pose
-
+                error_msg = "Arms not closed"
+                if armAngle > 10  and self.direction == "up":
+                    if error_msg not in self.error_dict:
+                        self.error_dict[error_msg] = time.time()
 
             # =====================================================================
 

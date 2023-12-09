@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_application/exercise_page.dart';
+import 'package:DynamicFit/exercise_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

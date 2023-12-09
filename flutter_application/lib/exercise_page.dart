@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_application/demo_page.dart';
+import 'package:DynamicFit/demo_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -19,7 +19,7 @@ class _ExercisePageState extends State<ExercisePage> {
   void initState() {
     super.initState();
 
-    server_response = sendRequest('http://localhost:8000/exerciseinfo'); // 'http://3.18.103.214:5000/exerciseinfo'
+    server_response = sendRequest('http://18.190.28.206:5000/exerciseinfo'); // 'http://3.18.103.214:5000/exerciseinfo'
   }
 
   void navigateToDemoPage(String exercise, Map exerciseObj) {
