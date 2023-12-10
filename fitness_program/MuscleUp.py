@@ -15,7 +15,8 @@ class set:
         self.current_location = None
         self.count = 0 
         self.direction = None
-        self.directionCount = 0
+        self.directionCountDown = 0
+        self.directionCountUp = 0
         self.end_movement = None
         
         # Variables to determine if form is correct (everything should be true when correct)
@@ -51,51 +52,63 @@ class set:
             # Figure out if we are below or above the bar.
             _, location_shoulder = self.detector.getCoordinate(11)
             _, location_hand = self.detector.getCoordinate(15)
-            if location_shoulder > location_hand:
+            if location_shoulder < location_hand:
                 self.bar = "above"
             else:
                 self.bar = "below"
                 
             # Check if one rep has been completed
-            leftelbowangle = self.detector.getAngle(15,13,11)
-            rightelbowangle = self.detector.getAngle(12,14,16)
+            leftelbowangle = self.detector.getAngle(11,13,15)
+            rightelbowangle = self.detector.getAngle(16,14,12)
             if self.direction != None:
                 # if below bar and arms are straight
                 if self.bar == "below" and leftelbowangle > 150 and rightelbowangle > 150 and self.direction == "up":
                     self.armsFullyExtendedBelowBar = True
                 if self.bar == "above" and leftelbowangle > 150 and rightelbowangle > 150 and self.direction == "down":
                     self.armsFullyExtendedAboveBar = True
-                if leftelbowangle > 150 and rightelbowangle > 150 and self.armsFullyExtendedAboveBar and self.armsFullyExtendedBelowBar:
+                if leftelbowangle > 160 and leftelbowangle < 190 and rightelbowangle > 160 and rightelbowangle < 190 and self.armsFullyExtendedAboveBar and self.armsFullyExtendedBelowBar and self.bar == "below":
                     self.completed()
                     self.end_movement = True
 
             # Mark end of ending movement
-            if self.end_movement and self.direction == "up":
+            if self.end_movement and self.bar == "below":
                 self.end_movement = False
 
             # =========================== Check for Errors ========================
 
             # Error: Reached top of bar, but failed to straighten arms above the bar
-            error_msg = "failed to straighten arms above the bar"
-            if self.direction == "down" and self.bar == "above" and self.armsFullyExtendedAboveBar == False:
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
+            error_msg = "above the bar"
+            if self.bar == "above" and self.armsFullyExtendedAboveBar == False:
+                if self.direction == "down":
+                    self.directionCountDown = self.directionCountDown + 1
+                    if self.directionCountDown == 5:
+                        if error_msg not in self.error_dict:
+                            self.error_dict[error_msg] = time.time()
+                else:
+                    self.directionCountDown = 0
 
 
             # Error: Failed to straighten arm below the bar (completing the movement) before starting the next rep
-            error_msg = "failed to straighten arms below the bar"
-            if self.direction == "up" and self.bar == "below" and self.armsFullyExtendedBelowBar == False:
-                if error_msg not in self.error_dict:
-                    self.error_dict[error_msg] = time.time()
+            error_msg = "below the bar"
+            if self.bar == "below" and self.armsFullyExtendedBelowBar == False:
+                if self.direction == "up":
+                    self.directionCountUp = self.directionCountUp + 1
+                    if self.directionCountUp == 5:
+                        if error_msg not in self.error_dict:
+                            self.error_dict[error_msg] = time.time()
+                else:
+                    self.directionCount = 0
             
             # =====================================================================
 
             self.drawFeedback(frame)
-        except:
+        except Exception as e:
             print("Error reading body")
+            print(e)
 
 
     def completed(self):
+        print("hit completed")
         # Increase the count of reps
         if self.armsFullyExtendedAboveBar and self.armsFullyExtendedBelowBar:
             self.count = self.count + 1
@@ -133,3 +146,8 @@ class set:
         x_origin = int(self.detector.image.shape[0]*0.2)
         y_origin = int(self.detector.image.shape[0]*0.8)
         cv2.putText(frame, str(self.count), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
+
+        # cv2.putText(frame, str(self.direction), (x_origin + 100, y_origin + 0) , 16, 1, (0,0,255), thickness=2)
+        # cv2.putText(frame, "Bar: " + str(self.bar), (x_origin + 100, y_origin + 50) , 16, 1, (0,0,255), thickness=2)
+        # cv2.putText(frame, "Below Bar: " + str(self.armsFullyExtendedBelowBar), (x_origin + 100, y_origin + 100), 16, 1, (0,0,255), thickness=2)
+        # cv2.putText(frame, "Above Bar: " + str(self.armsFullyExtendedAboveBar), (x_origin + 100, y_origin + 150), 16, 1, (0,0,255), thickness=2)
