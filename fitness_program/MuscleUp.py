@@ -102,9 +102,8 @@ class set:
             # =====================================================================
 
             self.drawFeedback(frame)
-        except Exception as e:
+        except:
             print("Error reading body")
-            print(e)
 
 
     def completed(self):
