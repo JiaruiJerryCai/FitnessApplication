@@ -3,10 +3,11 @@ import Pushup
 import Squat
 import Plank
 import Situp
+import JumpingJacks
+import MuscleUp
 # import Leftsideplank
-# import MuscleUp
 # import Rightsideplank
-import Jumpingjacks
+
 import firebase_manager
 import cv2
 
@@ -43,18 +44,21 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True):
     if exercise == 'Sit Up':
         analyzer = Situp.set()
         print("Running Sit Up")
+    if exercise == "Jumping Jacks":
+        analyzer = JumpingJacks.set()
+        print("Running Jumping Jack")
+    if exercise == "Muscle Up":
+        analyzer = MuscleUp.set()
+        print("Running Muscle Up")
+
     # if exercise == 'Left Side Plank':
     #     analyzer = Leftsideplank.set(VideoFPS)
     #     print('Running Left Side Plank')
     # if exercise == 'Right Side Plank':
     #     analyzer = Rightsideplank.set(VideoFPS)
     #     print('Running Right Side Plank')
-    # if exercise == "Muscle Up":
-    #     analyzer = MuscleUp.set()
-    #     print("Running Muscle Up")
-    if exercise == "Jumping Jacks":
-        analyzer = Jumpingjacks.set()
-        print("Running Jumping Jack")
+
+
 
     # Print error if video is not accessible
     if not video.isOpened():
@@ -77,10 +81,10 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True):
             writer.write(frame) # Save frames to recording
 
             #shows video
-            cv2.imshow("Your Workout", frame)
-            key = cv2.waitKey(0)
-            if key == ord('q'):
-                break
+            # cv2.imshow("Your Workout", frame)
+            # key = cv2.waitKey(0)
+            # if key == ord('q'):
+            #     break
 
         else:
             break

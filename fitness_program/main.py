@@ -1,4 +1,4 @@
 import fitness_analyzer
 
-Link = fitness_analyzer.fitnessAnalyzer('Jumping Jacks', 'resources/ab.mp4','AnalyzedJumpingJack', upload=False)
+Link = fitness_analyzer.fitnessAnalyzer('Muscle Up', 'resources/ab.mp4','AnalyzedMuscleUp', upload=False)
 print(Link)
