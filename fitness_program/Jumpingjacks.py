@@ -65,15 +65,13 @@ class set:
             # Detect if arm is raised
             shoulderAngle = self.detector.getAngle(13, 11, 23) # Left shoulder
             if self.posture == "open":
-                print("currently open " + str(shoulderAngle) + " " + str(shoulderAngle > 100))
                 if int(shoulderAngle) > 100:
-                    print("Helo you did it")
-                    self.armRaised == True
+                    self.armRaised = True
 
             # Detect if arm is closed
             if self.posture == "close":
                 if shoulderAngle < 50:
-                    self.armClosed == True
+                    self.armClosed = True
 
 
             # Mark end of ending movement
@@ -105,7 +103,6 @@ class set:
             print("Error reading body")
 
     def completed(self):
-        print("hit completed")
         # Increase the count of reps
         if (self.posture == "close" and self.armClosed == True) or (self.posture == "open" and self.armRaised == True):
             self.count = self.count + 0.5
@@ -148,17 +145,8 @@ class set:
         x_origin = int(self.detector.image.shape[0]*0.2)
         y_origin = int(self.detector.image.shape[0]*0.8)
         cv2.putText(frame, str(self.count), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
-        cv2.putText(frame, str(self.posture), (x_origin, y_origin + 80), 16, 3, (0,0,255), thickness=5)
-        if self.armClosed:
-            cv2.putText(frame, "ArmClosed: True", (x_origin, y_origin + 160), 16, 3, (0,0,255), thickness=5)
-        else: 
-            cv2.putText(frame, "ArmClosed: False", (x_origin, y_origin + 160), 16, 3, (0,0,255), thickness=5)
-  
-        if self.armRaised:
-            cv2.putText(frame, "ArmRaised: True", (x_origin, y_origin + 240), 16, 3, (0,0,255), thickness=5)
-        else:
-            cv2.putText(frame, "ArmRaised: False", (x_origin, y_origin + 240), 16, 3, (0,0,255), thickness=5)
-            
 
-
+        # cv2.putText(frame, str(self.posture), (x_origin, y_origin + 80), 16, 3, (0,0,255), thickness=5)
+        # cv2.putText(frame, "ArmClosed: " + str(self.armClosed), (x_origin, y_origin + 160), 16, 3, (0,0,255), thickness=5)
+        # cv2.putText(frame, "ArmRaised: " + str(self.armRaised), (x_origin, y_origin + 240), 16, 3, (0,0,255), thickness=5)
         
