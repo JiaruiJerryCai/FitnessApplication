@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Flutter Application</string>
+	<string>DynamicFit</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -34,12 +34,10 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Access camera</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Microphone</string>
+	<string>The application uses a camera to record a video of the exercise.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Library</string>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<key>The application uses videos from the library to analyze the user's exercise.</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
