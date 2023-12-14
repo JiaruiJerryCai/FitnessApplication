@@ -12,19 +12,20 @@ class set:
         # Variables to determine rep progress
         self.half_completed = None
         self.previous_location = None
-        self.starting_position = None
         self.count = 0 
         self.direction = None
         self.end_movement = None
+        self.leftOrRight = None #left or right
         
         # Variables to determine if form is correct (everything should be true when correct)
         #Maintained body part
         self.backAlwaysStraight = True
-        self.kneeAlwaysStraight = True
-        self.headAlwaysStraight = True 
+        self.otherLegStraight = True
+
         #Changing body part
-        self.armsFullyBent = False
-        self.armsFullyExtended = False
+        self.legFullyBent = False
+        self.legStraight = False
+
         
         # Error Dictionary
         self.error_dict = {}
@@ -49,19 +50,41 @@ class set:
                 elif self.previous_location + (self.detector.getDistance(13,15) * 0.04) < self.current_location:
                     self.direction = "down" #down
                 self.previous_location = self.current_location
-                
-                
-            # Check if one rep has been completed
-            if self.direction != None:
-                leftelbowangle = self.detector.getAngle(15,13,11)
-                if leftelbowangle < 70 and self.direction == "down":
-                    self.armsFullyBent = True
-                    self.half_completed = True
-                if leftelbowangle > 140:
-                    self.armsFullyExtended = True
-                    if self.half_completed:
-                        self.completed()
-                        self.end_movement = True
+            
+            # Check if left or right leg is used
+            right = self.detector.getDistance(0,26)
+            left = self.detector.getDistance(0,25)
+            if left > right:
+                self.leftOrRight = "right"
+            elif left < right: 
+                self.leftOrRight = "left"
+
+
+            if self.leftOrRight == "left":
+                if self.direction != None:
+                    leftlegangle = self.detector.getAngle(27,25,23)
+                    righthipangle = self.detector.getAngle(12,24,26)
+                    if leftlegangle < 100 and righthipangle > 160 and self.direction == "up":
+                        self.legFullyBent = True
+                        self.half_completed = True
+                    if leftlegangle > 140 and righthipangle > 160:
+                        self.legStraight = True
+                        if self.half_completed:
+                            self.completed()
+                            self.end_movement = True
+
+            if self.leftOrRight == "right":
+                if self.direction != None:
+                    rightlegangle = self.detector.getAngle(28,26,24)
+                    lefthipangle = self.detector.getAngle(11,23,25)
+                    if rightlegangle < 100 and lefthipangle > 160 and self.direction == "up":
+                        self.legFullyBent = True
+                        self.half_completed = True
+                    if rightlegangle > 140 and lefthipangle > 160:
+                        self.legStraight = True
+                        if self.half_completed:
+                            self.completed()
+                            self.end_movement = True
 
             # Mark end of ending movement
             if self.end_movement and self.direction == "down":
@@ -69,6 +92,7 @@ class set:
 
             # =========================== Check for Errors ========================
                 
+            #Left leg
             
 
             # =====================================================================
@@ -79,17 +103,20 @@ class set:
 
     def completed(self):
         # Increase the count of reps
-        if self.backAlwaysStraight and self.kneeAlwaysStraight and self.headAlwaysStraight and self.armsFullyBent and self.armsFullyExtended:
+        if self.backAlwaysStraight and self.otherLegStraight and self.legFullyBent and self.legStraight:
             self.count = self.count + 1
         
         # Variables to determine if form is correct
-        self.backAlwaysStraight = True
-        self.kneeAlwaysStraight = True 
-        self.headAlwaysStraight = True
-        self.armsFullyBent = False
-        self.armsFullyExtended = False
+        # Variables to determine rep progress
+        self.half_completed = None
+        self.leftOrRight = None #left or right
         
-        self.half_completed = False
+        # Variables to determine if form is correct (everything should be true when correct)
+        #Maintained body part
+
+        #Changing body part
+        self.legFullyBent = False
+        self.legStraight = False
 
     def drawFeedback(self, frame):
         # Check error_dict to remove errors older than 2 seconds
