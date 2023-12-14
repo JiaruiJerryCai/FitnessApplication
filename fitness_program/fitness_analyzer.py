@@ -51,15 +51,6 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True):
         analyzer = Muscleup.set()
         print("Running Muscle Up")
 
-    # if exercise == 'Left Side Plank':
-    #     analyzer = Leftsideplank.set(VideoFPS)
-    #     print('Running Left Side Plank')
-    # if exercise == 'Right Side Plank':
-    #     analyzer = Rightsideplank.set(VideoFPS)
-    #     print('Running Right Side Plank')
-
-
-
     # Print error if video is not accessible
     if not video.isOpened():
         print("Error with video file...")
