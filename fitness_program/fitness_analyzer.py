@@ -3,8 +3,8 @@ import Pushup
 import Squat
 import Plank
 import Situp
-import JumpingJacks
-import MuscleUp
+import Jumpingjacks
+import Muscleup
 # import Leftsideplank
 # import Rightsideplank
 
@@ -45,10 +45,10 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True):
         analyzer = Situp.set()
         print("Running Sit Up")
     if exercise == "Jumping Jacks":
-        analyzer = JumpingJacks.set()
+        analyzer = Jumpingjacks.set()
         print("Running Jumping Jack")
     if exercise == "Muscle Up":
-        analyzer = MuscleUp.set()
+        analyzer = Muscleup.set()
         print("Running Muscle Up")
 
     # if exercise == 'Left Side Plank':
