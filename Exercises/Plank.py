@@ -1,4 +1,4 @@
-import pose_detector
+import fitness_program.pose_detector as pose_detector
 import cv2
 import time
 

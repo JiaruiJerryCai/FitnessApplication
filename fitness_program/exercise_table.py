@@ -25,19 +25,19 @@ exerciseTable = {
         "demo_video": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fsitup.mp4?alt=media&token=000f761d-1723-4d37-99af-6d3baf768190',
         "description": 'A sit-up is a classic abdominal exercise that targets the muscles in the core, particularly the rectus abdominis. This exercise is performed by lying on your back with your knees bent and feet flat on the ground, and then lifting your upper body off the floor towards your knees. The movement involves flexing the spine and engaging the abdominal muscles to lift the torso, promoting strength and endurance in the abdominal region.',
     },
-    # "Muscle Up" : {
-    #     "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fimages%2Fsitup.jpeg?alt=media&token=7e82659d-c620-4278-9912-454359446250',
-    #     "demo_video": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fsitup.mp4?alt=media&token=000f761d-1723-4d37-99af-6d3baf768190',
-    #     "description": 'A sit-up is a classic abdominal exercise that targets the muscles in the core, particularly the rectus abdominis. This exercise is performed by lying on your back with your knees bent and feet flat on the ground, and then lifting your upper body off the floor towards your knees. The movement involves flexing the spine and engaging the abdominal muscles to lift the torso, promoting strength and endurance in the abdominal region.',
-    # },
+    "Muscle Up" : {
+         "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fimages%2Fimages.jpeg?alt=media&token=6cf0504c-6a72-4a86-b6ad-7f048791fc27',
+         "demo_video": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fmuscle_up_ex.mp4?alt=media&token=f0ed7857-ceff-4eb4-a2a8-92151b8fe490',
+         "description": 'A muscle-up is a challenging and advanced calisthenics exercise that combines elements of both pulling and pushing movements. It is commonly performed on gymnastics rings or a pull-up bar and requires significant upper body strength, coordination, and explosive power. The movement involves transitioning from a hanging position beneath the apparatus to a position where the body is supported above it, with the arms fully extended.',
+    },
     "Jumping Jacks" : {
-        "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fimages%2FJumping%20Jacks.jpeg?alt=media&token=35b5bc1f-1311-44e7-a863-1722970ce03a',
+        "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fimages%2Fdownload.jpeg?alt=media&token=542b766e-8cab-4027-8fd3-b55ebf774538',
         "demo_video": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fab.mp4?alt=media&token=83b161f7-c9e7-4c49-b17c-ef234d1827bd',
         "description": 'Jumping jacks are a dynamic and invigorating full-body exercise that combines cardiovascular benefits with muscle engagement. This simple yet effective calisthenic movement involves starting from a standing position, then simultaneously jumping while spreading the legs wide and raising the arms overhead. The motion is then reversed by bringing the arms back down and returning the feet to the starting position. Jumping jacks engage multiple muscle groups, including the legs, core, arms, and shoulders, making them an excellent choice for a quick and efficient workout. Beyond their physical benefits, jumping jacks also serve as an excellent warm-up exercise, promoting increased heart rate, improved circulation, and enhanced flexibility. Whether incorporated into a fitness routine or used as a standalone exercise, jumping jacks offer a fun and accessible way to boost cardiovascular health and promote overall fitness.',
-    }
-    # "Lunge" {
-    #     "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fimages%2Fsitup.jpeg?alt=media&token=7e82659d-c620-4278-9912-454359446250',
-    #     "demo_video": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fsitup.mp4?alt=media&token=000f761d-1723-4d37-99af-6d3baf768190',
-    #     "description": 'A sit-up is a classic abdominal exercise that targets the muscles in the core, particularly the rectus abdominis. This exercise is performed by lying on your back with your knees bent and feet flat on the ground, and then lifting your upper body off the floor towards your knees. The movement involves flexing the spine and engaging the abdominal muscles to lift the torso, promoting strength and endurance in the abdominal region.',
-    # },
+    },
+    "Lunge" : {
+        "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fgetty_59bb8dacabd94fd4b51e4414c70d5560.jpeg?alt=media&token=e621072e-1ba1-4e21-abba-ebc1657b20cb',
+        "demo_video": None,
+        "description": 'A lunge is a fundamental lower-body exercise that targets multiple muscle groups, including the quadriceps, hamstrings, glutes, and calves. It is a versatile and effective movement commonly incorporated into strength training, fitness routines, and athletic training programs. The lunge is known for its simplicity yet effectiveness in building leg strength, improving balance, and enhancing overall lower body stability.',
+    },
 }

@@ -1,4 +1,4 @@
-import pose_detector
+import fitness_program.pose_detector as pose_detector
 import time
 import cv2
 
@@ -11,19 +11,15 @@ class set:
 
         # Variables to determine rep progress
         self.half_completed = None
-        self.previous_location = None
-        self.current_location = None
-        self.starting_position = None
+        self.startingPosition = None
         self.count = 0 
-        self.direction = None
-        self.directionCount = 0
-        self.end_movement = None
         
         # Variables to determine if form is correct (everything should be true when correct)
         # Maintained body part
+        self.legNotStretched = True
+        self.handCloseToHead = True
+
         # Changing body part
-        self.handAboveNose = False
-        self.armsFullyExtended = False
         
         # Error Dictionary
         self.error_dict = {}
@@ -37,52 +33,33 @@ class set:
         self.detector.analyze(frame)
 
         try: 
-            # Calculate Direction
-            if self.previous_location == None:
-                _, self.previous_location = self.detector.getCoordinate(0) # nose
-            else:
-                # Determine direction once the person has moved
-                _, self.current_location = self.detector.getCoordinate(0)
-                if self.previous_location + (self.detector.getDistance(13,15) * 0) > self.current_location:
-                    self.direction = "up" 
-                elif self.previous_location - (self.detector.getDistance(13,15) * 0) < self.current_location:
-                    self.direction = "down" 
-                self.previous_location = self.current_location
+            hipAngle = self.detector.getAngle(11,23,25)
+
+            # Check if user is in starting position
+            self.isHandCloseToEar()
+            if self.startingPosition == None and hipAngle > 110 and self.handCloseToHead:
+                self.startingPosition = True
                 
             # Check if one rep has been completed
-            _, location_nose = self.detector.getCoordinate(0)
-            _, location_hand = self.detector.getCoordinate(15)
-            leftelbowangle = self.detector.getAngle(15,13,11)
-            rightelbowangle = self.detector.getAngle(12,14,16)
-            if self.direction != None:
-                if  location_nose < location_hand and self.direction == "up":
-                    self.handAboveNose = True
+            if self.startingPosition:
+                if hipAngle < 50: 
                     self.half_completed = True
-                if leftelbowangle > 150 and rightelbowangle > 150:
-                    self.armsFullyExtended = True
-                    if self.half_completed:
-                        self.completed()
-                        self.end_movement = True
-
-            # Mark end of ending movement
-            if self.end_movement and self.direction == "up":
-                self.end_movement = False
+                if self.half_completed and hipAngle > 110:
+                    self.completed()
 
             # =========================== Check for Errors ========================
 
-            # Verify the nose is above the hand
-            error_msg = "head not high enough"
-            if self.handAboveNose == False  and self.direction == "down" and self.end_movement == False:
-                self.directionCount = self.directionCount + 1
-                if self.directionCount == 10:
-                    if error_msg not in self.error_dict:
-                        self.error_dict[error_msg] = time.time()
-            else:
-                self.directionCount = 0
+            # Check if hand is close to ear
+            error_msg = "Hand is too far from ear"
+            if self.handCloseToHead == False:
+                if error_msg not in self.error_dict:
+                    self.error_dict[error_msg] = time.time()
 
-            # Arms did not extend fully
-            error_msg = "arms not extended"
-            if self.direction == "up" and self.armsFullyExtended == False and self.end_movement == False:
+            # Check if leg is stretched
+            legAngle = self.detector.getAngle(23,25,27)
+            error_msg = "Legs are stretched too far"
+            if legAngle > 80:
+                self.legNotStretched = False
                 if error_msg not in self.error_dict:
                     self.error_dict[error_msg] = time.time()
 
@@ -94,14 +71,11 @@ class set:
 
     def completed(self):
         # Increase the count of reps
-        if self.handAboveNose and self.armsFullyExtended:
+        if self.handCloseToHead and self.legNotStretched:
             self.count = self.count + 1
         
         # Variables to determine if form is correct
-        #Changing body part
-        self.handAboveNose = False
-        self.armsFullyExtended = False
-
+        # Changing body part
         self.half_completed = False
 
 
@@ -132,3 +106,20 @@ class set:
         x_origin = int(self.detector.image.shape[0]*0.2)
         y_origin = int(self.detector.image.shape[0]*0.8)
         cv2.putText(frame, str(self.count), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
+
+    # Helper function that returns true if the hands are at the ears
+    def isHandCloseToEar(self):
+        
+        righthandProximityToEar = self.detector.getDistance(16,8)
+        if righthandProximityToEar <= (self.detector.getDistance(15,21)):
+            rightClose = True
+        else: 
+            rightClose = False
+
+        lefthandProximityToEar = self.detector.getDistance(15,7)
+        if lefthandProximityToEar <= (self.detector.getDistance(15,21)):
+            leftClose = True
+        else: 
+            leftClose = False 
+
+        self.handCloseToHead = rightClose and leftClose

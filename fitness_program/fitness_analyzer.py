@@ -1,11 +1,11 @@
-import Pullup
-import Pushup
-import Squat
-import Plank
-import Situp
-import Jumpingjacks
-import Muscleup
-import Lunge
+import Exercises.Pullup as Pullup
+import Exercises.Pushup as Pushup
+import Exercises.Squat as Squat
+import Exercises.Plank as Plank
+import Exercises.Situp as Situp
+import Exercises.Jumpingjacks as Jumpingjacks
+import Exercises.Muscleup as Muscleup
+import Exercises.Lunge as Lunge
 
 import firebase_manager
 import cv2
@@ -74,10 +74,10 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True):
             writer.write(frame) # Save frames to recording
 
             #shows video
-            cv2.imshow("Your Workout", frame)
-            key = cv2.waitKey(0)
-            if key == ord('q'):
-                break
+            # cv2.imshow("Your Workout", frame)
+            # key = cv2.waitKey(0)
+            # if key == ord('q'):
+            #     break
 
         else:
             break

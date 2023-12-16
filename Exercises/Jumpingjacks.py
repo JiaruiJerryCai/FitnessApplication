@@ -1,5 +1,5 @@
 import cv2
-import pose_detector
+import fitness_program.pose_detector as pose_detector
 import time
 
 # Rep class used to track the completion and progress of a rep 
@@ -12,21 +12,22 @@ class set:
         # Variables to determine rep progress
         self.half_completed = None
         self.previous_location = None
+        self.starting_position = None
         self.count = 0 
         self.direction = None
         self.end_movement = None
-        self.leftOrRight = None #left or right
+        self.posture = "open"  # "open" or "close" 
+        self.reachedTop =  False
+        self.reachedBottom = True
         
         # Variables to determine if form is correct (everything should be true when correct)
-        #Maintained body part
-        self.backAlwaysStraight = True
-        self.otherLegStraight = True
-
-        #Changing body part
-        self.legFullyBent = False
-        self.legStraight = False
-
+        # Maintained body part
         
+        # Changing body part
+        self.armRaised = None
+        self.armClosed = None
+
+
         # Error Dictionary
         self.error_dict = {}
 
@@ -41,7 +42,7 @@ class set:
         try:
             # Calculate Direction
             if self.previous_location == None:
-                _, self.previous_location = self.detector.getCoordinate(0) # nose
+                _, self.previous_location = self.detector.getCoordinate(0) # left shoulder
             else:
                 # Determine direction once the person has moved
                 _, self.current_location = self.detector.getCoordinate(0)
@@ -50,50 +51,50 @@ class set:
                 elif self.previous_location + (self.detector.getDistance(13,15) * 0.04) < self.current_location:
                     self.direction = "down" #down
                 self.previous_location = self.current_location
-            
-            # Check if left or right leg is used
-            right = self.detector.getDistance(0,26)
-            left = self.detector.getDistance(0,25)
-            if left > right:
-                self.leftOrRight = "right"
-            elif left < right: 
-                self.leftOrRight = "left"
+                
+                
+            # Check if one half of the jumping jack has been completed
+            if self.direction != None:
 
+                # Count one jump
+                if self.direction == "down":
+                    self.reachedTop = True
+                if self.direction == "up" and self.reachedTop:
+                    self.completed()
 
-            if self.leftOrRight == "left":
-                if self.direction != None:
-                    leftlegangle = self.detector.getAngle(27,25,23)
-                    righthipangle = self.detector.getAngle(12,24,26)
-                    if leftlegangle < 100 and righthipangle > 160 and self.direction == "up":
-                        self.legFullyBent = True
-                        self.half_completed = True
-                    if leftlegangle > 140 and righthipangle > 160:
-                        self.legStraight = True
-                        if self.half_completed:
-                            self.completed()
-                            self.end_movement = True
+            # Detect if arm is raised
+            shoulderAngle = self.detector.getAngle(13, 11, 23) # Left shoulder
+            if self.posture == "open":
+                if int(shoulderAngle) > 100:
+                    self.armRaised = True
 
-            if self.leftOrRight == "right":
-                if self.direction != None:
-                    rightlegangle = self.detector.getAngle(28,26,24)
-                    lefthipangle = self.detector.getAngle(11,23,25)
-                    if rightlegangle < 100 and lefthipangle > 160 and self.direction == "up":
-                        self.legFullyBent = True
-                        self.half_completed = True
-                    if rightlegangle > 140 and lefthipangle > 160:
-                        self.legStraight = True
-                        if self.half_completed:
-                            self.completed()
-                            self.end_movement = True
+            # Detect if arm is closed
+            if self.posture == "close":
+                if shoulderAngle < 50:
+                    self.armClosed = True
+
 
             # Mark end of ending movement
             if self.end_movement and self.direction == "down":
                 self.end_movement = False
 
             # =========================== Check for Errors ========================
-                
-            #Left leg
-            
+
+            # Verify if the arm is raised high enough            
+            if self.posture == "close":
+                error_msg = "Arms not raised high enough"
+                if self.armRaised:
+                    if self.armRaised == False:
+                        if error_msg not in self.error_dict:
+                            self.error_dict[error_msg] = time.time()
+
+
+            if self.posture == "open":
+                error_msg = "Arms not closed enough"
+                if self.armClosed:
+                    if self.armClosed == False:
+                        if error_msg not in self.error_dict:
+                            self.error_dict[error_msg] = time.time()
 
             # =====================================================================
 
@@ -103,20 +104,19 @@ class set:
 
     def completed(self):
         # Increase the count of reps
-        if self.backAlwaysStraight and self.otherLegStraight and self.legFullyBent and self.legStraight:
-            self.count = self.count + 1
-        
-        # Variables to determine if form is correct
-        # Variables to determine rep progress
-        self.half_completed = None
-        self.leftOrRight = None #left or right
-        
-        # Variables to determine if form is correct (everything should be true when correct)
-        #Maintained body part
+        if (self.posture == "close" and self.armClosed == True) or (self.posture == "open" and self.armRaised == True):
+            self.count = self.count + 0.5
 
-        #Changing body part
-        self.legFullyBent = False
-        self.legStraight = False
+        if self.posture == "open":
+            self.posture = "close"
+            self.armRaised = False
+        elif self.posture == "close":
+            self.posture = "open"
+            self.armClosed = False
+
+        # Variables to determine if form is correct
+        self.reachedTop = False
+
 
     def drawFeedback(self, frame):
         # Check error_dict to remove errors older than 2 seconds
@@ -145,3 +145,8 @@ class set:
         x_origin = int(self.detector.image.shape[0]*0.2)
         y_origin = int(self.detector.image.shape[0]*0.8)
         cv2.putText(frame, str(self.count), (x_origin, y_origin), 16, 3, (0,0,255), thickness=5)
+
+        # cv2.putText(frame, str(self.posture), (x_origin, y_origin + 80), 16, 3, (0,0,255), thickness=5)
+        # cv2.putText(frame, "ArmClosed: " + str(self.armClosed), (x_origin, y_origin + 160), 16, 3, (0,0,255), thickness=5)
+        # cv2.putText(frame, "ArmRaised: " + str(self.armRaised), (x_origin, y_origin + 240), 16, 3, (0,0,255), thickness=5)
+        

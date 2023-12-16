@@ -1,5 +1,5 @@
 import cv2
-import pose_detector
+import fitness_program.pose_detector as pose_detector
 import time
 
 # Rep class used to track the completion and progress of a rep 
