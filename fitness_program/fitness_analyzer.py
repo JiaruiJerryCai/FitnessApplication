@@ -6,6 +6,8 @@ import Exercises.Situp as Situp
 import Exercises.Jumpingjacks as Jumpingjacks
 import Exercises.Muscleup as Muscleup
 import Exercises.Lunge as Lunge
+import Exercises.Sideplanks as Sideplanks
+import Exercises.Kneeraises as Kneeraises
 
 import firebase_manager
 import cv2
@@ -13,7 +15,7 @@ import cv2
 # Connect to database
 manager = firebase_manager.firebaseManager()
 
-def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True):
+def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True, show=False):
 
     # Select what video to open up and access
     video = cv2.VideoCapture(videoLocation)
@@ -52,6 +54,12 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True):
     if exercise == "Lunge":
         analyzer = Lunge.set()
         print("Running Lunge")
+    if exercise == "Side Plank":
+        analyzer = Sideplanks.set(VideoFPS)
+        print("Running Side Planks")
+    if exercise == "Knee Raise":
+        analyzer = Kneeraises.set()
+        print("Running Knee Raise")
 
     # Print error if video is not accessible
     if not video.isOpened():
@@ -73,11 +81,12 @@ def fitnessAnalyzer(exercise, videoLocation, videoNameAnalyzed, upload=True):
 
             writer.write(frame) # Save frames to recording
 
-            #shows video
-            # cv2.imshow("Your Workout", frame)
-            # key = cv2.waitKey(0)
-            # if key == ord('q'):
-            #     break
+            #shows video (DO NOT SEND TO SERVER)
+            if show:
+                cv2.imshow("Your Workout", frame)
+                key = cv2.waitKey(0)
+                if key == ord('q'):
+                    break
 
         else:
             break

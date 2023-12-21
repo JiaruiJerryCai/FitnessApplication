@@ -40,4 +40,21 @@ exerciseTable = {
         "demo_video": None,
         "description": 'A lunge is a fundamental lower-body exercise that targets multiple muscle groups, including the quadriceps, hamstrings, glutes, and calves. It is a versatile and effective movement commonly incorporated into strength training, fitness routines, and athletic training programs. The lunge is known for its simplicity yet effectiveness in building leg strength, improving balance, and enhancing overall lower body stability.',
     },
+    
+    # Unfinished
+    "Side Plank" : {
+        "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fgetty_59bb8dacabd94fd4b51e4414c70d5560.jpeg?alt=media&token=e621072e-1ba1-4e21-abba-ebc1657b20cb',
+        "demo_video": None,
+        "description": 'A lunge is a fundamental lower-body exercise that targets multiple muscle groups, including the quadriceps, hamstrings, glutes, and calves. It is a versatile and effective movement commonly incorporated into strength training, fitness routines, and athletic training programs. The lunge is known for its simplicity yet effectiveness in building leg strength, improving balance, and enhancing overall lower body stability.',
+    },
+    "Knee Raise" : {
+        "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fgetty_59bb8dacabd94fd4b51e4414c70d5560.jpeg?alt=media&token=e621072e-1ba1-4e21-abba-ebc1657b20cb',
+        "demo_video": None,
+        "description": 'A lunge is a fundamental lower-body exercise that targets multiple muscle groups, including the quadriceps, hamstrings, glutes, and calves. It is a versatile and effective movement commonly incorporated into strength training, fitness routines, and athletic training programs. The lunge is known for its simplicity yet effectiveness in building leg strength, improving balance, and enhancing overall lower body stability.',
+    },
+    "Leg Raise" : {
+        "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fgetty_59bb8dacabd94fd4b51e4414c70d5560.jpeg?alt=media&token=e621072e-1ba1-4e21-abba-ebc1657b20cb',
+        "demo_video": None,
+        "description": 'A lunge is a fundamental lower-body exercise that targets multiple muscle groups, including the quadriceps, hamstrings, glutes, and calves. It is a versatile and effective movement commonly incorporated into strength training, fitness routines, and athletic training programs. The lunge is known for its simplicity yet effectiveness in building leg strength, improving balance, and enhancing overall lower body stability.',
+    },
 }
