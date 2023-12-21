@@ -3,7 +3,7 @@ exerciseTable = {
     "Pushup" : {
         "image": "https://firebasestorage.googleapis.com/v0/b/fitnessdb-1787d.appspot.com/o/assets%2Fimages%2FPushup.jpeg?alt=media&token=d3e76609-8aac-4724-b3df-e367fce9a3bc",
         "demo_video": "https://firebasestorage.googleapis.com/v0/b/fitnessdb-1787d.appspot.com/o/assets%2Fvideos%2Fpushup.mp4?alt=media&token=88bfa9cb-851e-4e3b-a6cf-bb00f509a6e8",
-        "description": "\t Pushups are calisthenic exercises that primarily targets the muscles of the chest, shoulders, and triceps. The exercise involves the individual lying prone on the ground, placing their hands slightly wider than shoulder-width apart, and then pushing their body up and down using the arms. The core muscles also play a role in stabilizing the body during the movement. Push-ups are a versatile and effective bodyweight exercise that can be adapted to different fitness levels and variations to target various muscle groups. They are commonly included in fitness routines to improve upper body strength and endurance."
+        "description": "Pushups are calisthenic exercises that primarily targets the muscles of the chest, shoulders, and triceps. The exercise involves the individual lying prone on the ground, placing their hands slightly wider than shoulder-width apart, and then pushing their body up and down using the arms. The core muscles also play a role in stabilizing the body during the movement. Push-ups are a versatile and effective bodyweight exercise that can be adapted to different fitness levels and variations to target various muscle groups. They are commonly included in fitness routines to improve upper body strength and endurance."
     },
     "Pullup" : {
         "image": "https://firebasestorage.googleapis.com/v0/b/fitnessdb-1787d.appspot.com/o/assets%2Fimages%2Fpullup.jpeg?alt=media&token=35aae311-6744-49ec-8f7b-5cf86d8ca837",
@@ -13,12 +13,12 @@ exerciseTable = {
     "Squat" : {
         "image": "https://firebasestorage.googleapis.com/v0/b/fitnessdb-1787d.appspot.com/o/assets%2Fimages%2FSquat.jpeg?alt=media&token=e92a7f29-63fb-440e-aec2-f908f4c2860c",
         "demo_video": "https://firebasestorage.googleapis.com/v0/b/fitnessdb-1787d.appspot.com/o/assets%2Fvideos%2Fsquat.mp4?alt=media&token=e0f29351-147c-416f-a5a2-e358c2aadac0",
-        "description": "\t Squat are compound exercises that target multiple muscle groups, including the quadriceps, hamstrings, glutes, and muscles in the lower back. It is a fundamental movement pattern that involves bending the knees and hips while keeping the back straight, typically with a downward and upward motion."
+        "description": "Squat are compound exercises that target multiple muscle groups, including the quadriceps, hamstrings, glutes, and muscles in the lower back. It is a fundamental movement pattern that involves bending the knees and hips while keeping the back straight, typically with a downward and upward motion."
     },
     "Plank" : {
         "image": "https://firebasestorage.googleapis.com/v0/b/fitnessdb-1787d.appspot.com/o/assets%2Fimages%2FPlank.jpeg?alt=media&token=2534e179-6739-426a-89e6-234db567f029",
         "demo_video": "https://firebasestorage.googleapis.com/v0/b/fitnessdb-1787d.appspot.com/o/assets%2Fvideos%2Fplank.mp4?alt=media&token=bd96154b-1508-4e8e-a7d4-9dc555280d92",
-        "description": "\t Planks are core-strengthening exercises that involve maintaining a static position, typically in a straight line from head to heels. It is an isometric exercise, meaning the muscles are contracted without any joint movement. \n \t Planks primarily target the core muscles, including the rectus abdominis, transverse abdominis, and obliques."
+        "description": "Planks are core-strengthening exercises that involve maintaining a static position, typically in a straight line from head to heels. It is an isometric exercise, meaning the muscles are contracted without any joint movement. \n \t Planks primarily target the core muscles, including the rectus abdominis, transverse abdominis, and obliques."
     },
     "Sit Up" : {
         "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fimages%2Fsitup.jpeg?alt=media&token=7e82659d-c620-4278-9912-454359446250',
@@ -40,21 +40,10 @@ exerciseTable = {
         "demo_video": None,
         "description": 'A lunge is a fundamental lower-body exercise that targets multiple muscle groups, including the quadriceps, hamstrings, glutes, and calves. It is a versatile and effective movement commonly incorporated into strength training, fitness routines, and athletic training programs. The lunge is known for its simplicity yet effectiveness in building leg strength, improving balance, and enhancing overall lower body stability.',
     },
-    
-    # Unfinished
     "Side Plank" : {
         "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fgetty_59bb8dacabd94fd4b51e4414c70d5560.jpeg?alt=media&token=e621072e-1ba1-4e21-abba-ebc1657b20cb',
         "demo_video": None,
         "description": 'A lunge is a fundamental lower-body exercise that targets multiple muscle groups, including the quadriceps, hamstrings, glutes, and calves. It is a versatile and effective movement commonly incorporated into strength training, fitness routines, and athletic training programs. The lunge is known for its simplicity yet effectiveness in building leg strength, improving balance, and enhancing overall lower body stability.',
     },
-    "Knee Raise" : {
-        "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fgetty_59bb8dacabd94fd4b51e4414c70d5560.jpeg?alt=media&token=e621072e-1ba1-4e21-abba-ebc1657b20cb',
-        "demo_video": None,
-        "description": 'A lunge is a fundamental lower-body exercise that targets multiple muscle groups, including the quadriceps, hamstrings, glutes, and calves. It is a versatile and effective movement commonly incorporated into strength training, fitness routines, and athletic training programs. The lunge is known for its simplicity yet effectiveness in building leg strength, improving balance, and enhancing overall lower body stability.',
-    },
-    "Leg Raise" : {
-        "image": 'https://firebasestorage.googleapis.com/v0/b/fitnessdatabase-243dc.appspot.com/o/assets%2Fvideos%2Fgetty_59bb8dacabd94fd4b51e4414c70d5560.jpeg?alt=media&token=e621072e-1ba1-4e21-abba-ebc1657b20cb',
-        "demo_video": None,
-        "description": 'A lunge is a fundamental lower-body exercise that targets multiple muscle groups, including the quadriceps, hamstrings, glutes, and calves. It is a versatile and effective movement commonly incorporated into strength training, fitness routines, and athletic training programs. The lunge is known for its simplicity yet effectiveness in building leg strength, improving balance, and enhancing overall lower body stability.',
-    },
+
 }
