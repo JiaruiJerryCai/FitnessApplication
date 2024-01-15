@@ -230,8 +230,7 @@ class _ResultPageState extends State<ResultPage> {
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: ListView(
           children: <Widget>[
             SizedBox(height: 100),
             AnalyzedVideo(),
