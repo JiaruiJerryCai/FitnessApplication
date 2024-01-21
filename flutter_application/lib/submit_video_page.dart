@@ -36,7 +36,7 @@ class _SubmitVideoPageState extends State<SubmitVideoPage> {
   @override
   void initState() {
     super.initState();
-    server_response = sendRequest('http://18.190.28.206:5000/'); // http://3.18.103.214:5000/
+    server_response = sendRequest('http://3.144.172.202:5000/'); 
   }
 
   // Method used to send a request to the server and return a response value
@@ -132,7 +132,7 @@ class _SubmitVideoPageState extends State<SubmitVideoPage> {
         if (xfilePick != null) {
           selectedFile = File(pickedFile!.path);
           server_response =
-              sendExerciseRequest('http://18.190.28.206:5000/exercisevideo'); // http://3.18.103.214:5000/exercisevideo
+              sendExerciseRequest('http://3.144.172.202:5000/exercisevideo'); 
         } else {
           ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
               const SnackBar(content: Text('Nothing is selected')));

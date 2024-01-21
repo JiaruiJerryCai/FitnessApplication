@@ -19,7 +19,7 @@ class _ExercisePageState extends State<ExercisePage> {
   void initState() {
     super.initState();
 
-    server_response = sendRequest('http://18.190.28.206:5000/exerciseinfo'); // 'http://3.18.103.214:5000/exerciseinfo'
+    server_response = sendRequest('http://3.144.172.202:5000/exerciseinfo'); 
   }
 
   void navigateToDemoPage(String exercise, Map exerciseObj) {
